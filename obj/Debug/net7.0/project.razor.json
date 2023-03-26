@@ -18645,13 +18645,13 @@
   "RootNamespace": "Inmobiliaria.Net",
   "Documents": [
     {
-      "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\Propietarios copy\\Details.cshtml",
-      "TargetPath": "Views\\Propietarios copy\\Details.cshtml",
+      "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\Inquilino\\Index.cshtml",
+      "TargetPath": "Views\\Inquilino\\Index.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\Propietarios copy\\Edit.cshtml",
-      "TargetPath": "Views\\Propietarios copy\\Edit.cshtml",
+      "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\Inquilino\\Edit.cshtml",
+      "TargetPath": "Views\\Inquilino\\Edit.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -18670,18 +18670,13 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\Propietarios copy\\Delete.cshtml",
-      "TargetPath": "Views\\Propietarios copy\\Delete.cshtml",
+      "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\Inquilino\\Details.cshtml",
+      "TargetPath": "Views\\Inquilino\\Details.cshtml",
       "FileKind": "mvc"
     },
     {
       "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\Propietarios\\Details.cshtml",
       "TargetPath": "Views\\Propietarios\\Details.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\Propietarios copy\\Index.cshtml",
-      "TargetPath": "Views\\Propietarios copy\\Index.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -18700,6 +18695,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\Inquilino\\Create.cshtml",
+      "TargetPath": "Views\\Inquilino\\Create.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\_ViewImports.cshtml",
       "TargetPath": "Views\\_ViewImports.cshtml",
       "FileKind": "mvc"
@@ -18715,11 +18715,6 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\Propietarios copy\\Create.cshtml",
-      "TargetPath": "Views\\Propietarios copy\\Create.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\Propietarios\\Edit.cshtml",
       "TargetPath": "Views\\Propietarios\\Edit.cshtml",
       "FileKind": "mvc"
@@ -18727,6 +18722,11 @@
     {
       "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\mseba\\Desktop\\segundo año\\.net\\Inmobiliaria.Net\\Views\\Inquilino\\Delete.cshtml",
+      "TargetPath": "Views\\Inquilino\\Delete.cshtml",
       "FileKind": "mvc"
     }
   ],

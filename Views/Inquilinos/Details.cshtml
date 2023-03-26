@@ -1,14 +1,13 @@
-@model Inmobiliaria.Net.Models.Propietario
+@model Inmobiliaria.Net.Models.Inquilino
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Details";
 }
 
-<h1>Borrar</h1>
+<h1>Detalles de Inquilino</h1>
 
-<h3>Esta seguro de eliminar el siguiente registro?</h3>
 <div>
-    <h4>Propietario</h4>
+    <h4>Inquilino</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -60,9 +59,9 @@
             @Html.DisplayFor(model => model.Nacimiento)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">VOLVER</a>
-    </form>
+</div>
+<div>
+    @Html.ActionLink("EDITAR", "Edit", new {  id = Model.Id}) |
+    @Html.ActionLink("BORRAR", "Delete", new { id = Model.Id }) |
+    <a asp-action="Index">VOLVER</a>
 </div>

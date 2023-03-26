@@ -2,7 +2,7 @@ namespace Inmobiliaria.Net.Models;
 
 public class Inquilino
 {
-    public string? Id { get; set; }
+    public int? Id { get; set; }
     public String? Dni { get; set; }
     public String? Nombre { get; set; }
     public String? Apellido { get; set; }
