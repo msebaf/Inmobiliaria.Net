@@ -38,6 +38,33 @@ public class BdPropietarios
         return res;
     }
 
+     public int Actualizar(Propietario propietario)
+    {
+        int res = 0;
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            var query = @"UPDATE propietario SET Nombre=@Nombre, Direccion=@Direccion, Telefono=@Telefono,
+             Nacimiento=@Nacimiento, Apellido=@Apellido, Email=@Email, Dni=@Dni WHERE Id=@Id;";
+            using (var command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@Id", propietario.Id);
+                command.Parameters.AddWithValue("@Nombre", propietario.Nombre);
+                command.Parameters.AddWithValue("@Direccion", propietario.Direccion);
+                command.Parameters.AddWithValue("@Telefono", propietario.Telefono);
+                command.Parameters.AddWithValue("@Nacimiento", propietario.Nacimiento);
+                command.Parameters.AddWithValue("@Apellido", propietario.Apellido);
+                command.Parameters.AddWithValue("@Email", propietario.Email);
+                command.Parameters.AddWithValue("@Dni", propietario.Dni);
+
+                connection.Open();
+                res = command.ExecuteNonQuery();
+                connection.Close();
+                
+            }
+        }
+        return res;
+    }
+
     public List<Propietario>Getpropietarios()
     {
 
@@ -115,4 +142,26 @@ public class BdPropietarios
         return propietario;
     }
 
+
+
+     public int DeletePropietario(int id)
+    {
+
+       int res = 0;
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            var query = @"Delete from propietario where Id = @id";
+            using (var command = new MySqlCommand(query, connection))
+           
+            {
+                 command.Parameters.AddWithValue("@id", id);
+                connection.Open();
+                res = command.ExecuteNonQuery();
+            connection.Close();
+        }
+        
+    }
+    return res;
+    }
 }
+

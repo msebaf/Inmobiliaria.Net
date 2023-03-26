@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Detalles de Propietario</h1>
 
 <div>
     <h4>Propietario</h4>
@@ -61,6 +61,7 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("EDITAR", "Edit", new {  id = Model.Id}) |
+    @Html.ActionLink("BORRAR", "Delete", new { id = Model.Id }) |
+    <a asp-action="Index">VOLVER</a>
 </div>

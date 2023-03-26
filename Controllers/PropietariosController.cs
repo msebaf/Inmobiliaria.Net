@@ -21,7 +21,8 @@ namespace Inmobiliaria.Net.Controllers
         // GET: Propietarios/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var prop = bdPropietarios.Getpropietario(id);
+            return View(prop);
         }
 
         // GET: Propietarios/Create
@@ -64,7 +65,7 @@ namespace Inmobiliaria.Net.Controllers
             {
                 // TODO: Add update logic here
                 
-
+                bdPropietarios.Actualizar(propietario);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -76,7 +77,8 @@ namespace Inmobiliaria.Net.Controllers
         // GET: Propietarios/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+           var prop =  bdPropietarios.Getpropietario(id);
+            return View(prop);
         }
 
         // POST: Propietarios/Delete/5
@@ -87,6 +89,7 @@ namespace Inmobiliaria.Net.Controllers
             try
             {
                 // TODO: Add delete logic here
+                bdPropietarios.DeletePropietario(id);
 
                 return RedirectToAction(nameof(Index));
             }
