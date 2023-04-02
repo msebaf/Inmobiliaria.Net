@@ -3,10 +3,15 @@
 @{
     ViewData["Title"] = "Index";
     var tipos = (IList<Tipo>) ViewBag.tipos;
+    var usos = (IList<Uso>) ViewBag.usos;
     Dictionary<int?, String?> tiposMap = new Dictionary<int?, String?>();
     foreach (var item in tipos){
         tiposMap.Add(item.Id, item.TipoInm);
 
+    }
+    Dictionary<int?, String?> usosMAp = new Dictionary<int?, String?>();
+    foreach (var item in usos){
+        usosMAp.Add(item.Id, item.UsoInm);
     }
 }
 
@@ -56,7 +61,7 @@
                 @Html.DisplayFor(modelItem => tiposMap[item.Tipo])
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Uso)
+                @Html.DisplayFor(modelItem => usosMAp[item.Uso])
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Direccion)

@@ -15,7 +15,9 @@ namespace Inmobiliaria.Net.Controllers
         public ActionResult Index()
         {   
             BdTipos bdt= new BdTipos();
+            BdUsos bdu = new BdUsos();
             ViewBag.tipos = bdt.GetTipos();
+            ViewBag.usos = bdu.GetUsos();
             var Inmuebles = bdInmuebles.Getinmuebles();
             return View(Inmuebles);
         }
@@ -24,14 +26,24 @@ namespace Inmobiliaria.Net.Controllers
         public ActionResult Details(int id)
         {
             var inmu = bdInmuebles.Getinmueble(id);
+             BdPropietarios bdp = new BdPropietarios();
+            BdTipos bdt = new BdTipos();
+            BdUsos bdu = new BdUsos();
+                 ViewBag.props = bdp.Getpropietarios();
+                 ViewBag.tipos = bdt.GetTipos();
+                 ViewBag.usos = bdu.GetUsos();
             return View(inmu);
         }
 
         // GET: Inmuebles/Create
         public ActionResult Create()
         {
-            BdPropietarios bdp = new BdPropietarios();
-            ViewBag.props = bdp.Getpropietarios();
+           BdPropietarios bdp = new BdPropietarios();
+            BdTipos bdt = new BdTipos();
+            BdUsos bdu = new BdUsos();
+                 ViewBag.props = bdp.Getpropietarios();
+                 ViewBag.tipos = bdt.GetTipos();
+                 ViewBag.usos = bdu.GetUsos();
             return View();
         }
 
@@ -61,8 +73,10 @@ namespace Inmobiliaria.Net.Controllers
             var inmu = bdInmuebles.Getinmueble(id);
             BdPropietarios bdp = new BdPropietarios();
             BdTipos bdt = new BdTipos();
+            BdUsos bdu = new BdUsos();
                  ViewBag.props = bdp.Getpropietarios();
                  ViewBag.tipos = bdt.GetTipos();
+                 ViewBag.usos = bdu.GetUsos();
             return View(inmu);
         }
 
@@ -83,8 +97,10 @@ namespace Inmobiliaria.Net.Controllers
             {
               BdPropietarios bdp = new BdPropietarios();
             BdTipos bdt = new BdTipos();
+            BdUsos bdu = new BdUsos();
                  ViewBag.props = bdp.Getpropietarios();
                  ViewBag.tipos = bdt.GetTipos();
+                 ViewBag.usos = bdu.GetUsos();
                 return View();
             }
         }
@@ -93,6 +109,12 @@ namespace Inmobiliaria.Net.Controllers
         public ActionResult Delete(int id)
         {
            var inmu =  bdInmuebles.Getinmueble(id);
+            BdPropietarios bdp = new BdPropietarios();
+            BdTipos bdt = new BdTipos();
+            BdUsos bdu = new BdUsos();
+                 ViewBag.props = bdp.Getpropietarios();
+                 ViewBag.tipos = bdt.GetTipos();
+                 ViewBag.usos = bdu.GetUsos();
             return View(inmu);
         }
 
