@@ -1,0 +1,82 @@
+@model IEnumerable<Inmobiliaria.Net.Models.Inmueble>
+
+@{
+    ViewData["Title"] = "Index";
+    var tipos = (IList<Tipo>) ViewBag.tipos;
+    Dictionary<int?, String?> tiposMap = new Dictionary<int?, String?>();
+    foreach (var item in tipos){
+        tiposMap.Add(item.Id, item.TipoInm);
+
+    }
+}
+
+<h1>Inmuebles</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+        
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Uso)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CantidadDeAmbientes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+             <th>
+                @Html.DisplayNameFor(model => model.PropietarioId)
+            </th>
+             
+          
+            
+          
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => tiposMap[item.Tipo])
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Uso)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CantidadDeAmbientes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Precio)
+            </td>
+             <td>
+                @(item.Duenio.Nombre + " " + item.Duenio.Apellido)
+            
+           
+            <td>
+                @Html.ActionLink("Editar", "Edit", new {  id=item.Id }) |
+                @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

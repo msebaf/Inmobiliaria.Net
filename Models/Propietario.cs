@@ -14,6 +14,11 @@ public class Propietario
     public Propietario()
     {
     }
+
+    public override string ToString()
+    {
+        return $"{Nombre} {Apellido}";
+    }
     
 }
 
