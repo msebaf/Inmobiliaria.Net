@@ -38,10 +38,10 @@ namespace Inmobiliaria.Net.Controllers
         // GET: Inmuebles/Create
         public ActionResult Create()
         {
-           BdPropietarios bdp = new BdPropietarios();
+         
             BdTipos bdt = new BdTipos();
             BdUsos bdu = new BdUsos();
-                 ViewBag.props = bdp.Getpropietarios();
+                
                  ViewBag.tipos = bdt.GetTipos();
                  ViewBag.usos = bdu.GetUsos();
             return View();
