@@ -13,4 +13,9 @@ public class Inquilino
 
 
     public Inquilino(){}
+
+     public override string ToString()
+    {
+        return $"{Nombre} {Apellido}";
+    }
 }

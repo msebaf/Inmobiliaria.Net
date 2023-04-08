@@ -23,12 +23,18 @@ public class Inmueble
     public decimal? Superficie { get; set; }
     [Display(Name = "Propietario")]
     public int? PropietarioId { get; set; }
+    public bool Disponible {get;set;}
 
 
      public Propietario? Duenio { get; set; }
 
     public Inmueble()
     {
+    }
+
+     public override string ToString()
+    {
+        return $"{Direccion}";
     }
     
 }

@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Direccion" class="control-label"></label>
-                <input asp-for="Direccion" class="form-control"/>
+                <input asp-for="Direccion" class="form-control" required/>
                 <span asp-validation-for="Direccion" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -50,28 +50,28 @@
 
             <div class="form-group">
                 <label asp-for="CantidadDeAmbientes" class="control-label"></label>
-                <input asp-for="CantidadDeAmbientes" class="form-control"/>
+                <input asp-for="CantidadDeAmbientes" class="form-control" required/>
                 <span asp-validation-for="CantidadDeAmbientes" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Latitud" class="control-label"></label>
-                <input asp-for="Latitud" class="form-control"/>
+                <input asp-for="Latitud" class="form-control" required/>
                 <span asp-validation-for="Latitud" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Longitud" class="control-label"></label>
-                <input asp-for="Longitud" class="form-control"/>
+                <input asp-for="Longitud" class="form-control" required/>
                 <span asp-validation-for="Longitud" class="text-danger"></span>
             </div> 
              <div class="form-group">
                 <label asp-for="Superficie" class="control-label"></label>
-                <input asp-for="Superficie" class="form-control"/>
+                <input asp-for="Superficie" class="form-control" required/>
                 <span asp-validation-for="Superficie" class="text-danger"></span>
             </div> 
 
             <div class="form-group">
                 <label asp-for="Precio" class="control-label"></label>
-                <input asp-for="Precio" class="form-control"/>
+                <input asp-for="Precio" class="form-control" required/>
                 <span asp-validation-for="Precio" class="text-danger"></span>
             </div>
 
@@ -86,6 +86,20 @@
                 }
                 </select>
                 <span asp-validation-for="PropietarioId" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label  class="control-label">Disponible</label>
+                <select class="form-control" name="Disponible">
+                @if(Model.Disponible){
+                    <option value="true" selected>Disponible</option>
+                    <option value="false">No Disponible</option>
+                    }else{
+                         <option value="true">Disponible</option>
+                    <option value="false" selected>No Disponible</option>
+                    }
+                
+                </select>
+                <span asp-validation-for="Disponible" class="text-danger"></span>
             </div>
        
             <div class="form-group">
