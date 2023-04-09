@@ -70,7 +70,43 @@ public class BdContratos
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
             var query = @"SELECT contrato.Id, contrato.InmuebleId, contrato.InquilinoId, contrato.FechaInicio, contrato.FechaFinal, contrato.MontoMensual
-        from contrato";
+        from contrato ORDER BY FechaFinal DESC";
+            using (var command = new MySqlCommand(query, connection))
+            {
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Contrato contrato = new Contrato
+                        {
+                            Id = reader.GetInt32(nameof(contrato.Id)), // ID
+                            InmuebleId = reader.GetInt32(nameof(contrato.InmuebleId)),
+                            InquilinoId = reader.GetInt32(nameof(contrato.InquilinoId)),
+                            FechaInicio= reader.GetDateTime(nameof(contrato.FechaInicio)),
+                            FechaFinal= reader.GetDateTime(nameof(contrato.FechaFinal)),
+                            MontoMensual= reader.GetDouble(nameof(contrato.MontoMensual))
+                            
+                        };
+                        Contratos.Add(contrato);
+                    }
+                }
+
+            }
+            connection.Close();
+        }
+        return Contratos;
+    }
+
+    public List<Contrato>GetContratosVigentes()
+    {
+
+        List<Contrato> Contratos = new List<Contrato>();
+
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            var query = @"SELECT contrato.Id, contrato.InmuebleId, contrato.InquilinoId, contrato.FechaInicio, contrato.FechaFinal, contrato.MontoMensual
+        from contrato WHERE YEAR(contrato.FechaFinal) >= YEAR(NOW()) AND  MONTH(contrato.FechaFinal) >= MONTH(NOW()) ORDER BY FechaFinal ASC";
             using (var command = new MySqlCommand(query, connection))
             {
                 connection.Open();

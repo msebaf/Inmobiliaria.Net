@@ -19,6 +19,13 @@ namespace Inmobiliaria.Net.Controllers
             return View(contratos);
         }
 
+         public ActionResult Vigentes()
+        {   
+            
+            var contratos = bdContratos.GetContratosVigentes();
+            return View(contratos);
+        }
+
         // GET: Inmuebles/Details/5
         public ActionResult Details(int id)
         {
