@@ -15,14 +15,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.ContratoId)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaPago)
-            </th>
+          
             <th>
                 @Html.DisplayNameFor(model => model.Monto)
             </th>
                <th>
-                @Html.DisplayNameFor(model => model.MesPagado)
+                @Html.DisplayNameFor(model => model.Periodo)
+            </th>
+              <th>
+                @Html.DisplayNameFor(model => model.FechaPago)
             </th>
             
           
@@ -39,16 +40,17 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ContratoId)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaPago)
-            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.Monto)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MesPagado)
+                @Html.DisplayFor(modelItem => item.Periodo)
             </td>
-           
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaPago)
+            </td>
+          
             
            
             <td>

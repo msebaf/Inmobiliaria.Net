@@ -53,10 +53,27 @@ namespace Inmobiliaria.Net.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Contrato contrato)
         {
+            
             try
             {
                 // TODO: Add insert logic here
                 int res = bdContratos.Alta(contrato);
+                 DateTime? cuota = contrato.FechaInicio;
+                BdPagos bdp = new BdPagos();
+                while (cuota.Value.Month <= contrato.FechaFinal.Value.Month)
+                {
+                    Pago pago = new Pago{
+                        ContratoId = res,
+                       
+                        Periodo = cuota.Value,
+                        Monto = contrato.MontoMensual
+                        
+
+                    };
+                   int pagoID = bdp.Alta(pago);
+                    cuota = cuota.Value.AddMonths(1);
+                }
+               
                 
                 return RedirectToAction(nameof(Index));
             }

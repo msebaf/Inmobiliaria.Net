@@ -7,7 +7,7 @@ public class Pago
     
    
     public DateTime? FechaPago { get; set; }
-    public DateTime? MesPagado { get; set; }
+    public DateTime? Periodo { get; set; }
   
     public double? Monto { get; set; }
   
@@ -15,4 +15,6 @@ public class Pago
 
 
     public Pago(){}
+
+
 }
