@@ -71,7 +71,7 @@ namespace Inmobiliaria.Net.Controllers
             {
                 
                 bdPagos.Pagar(pago);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index",  new { id = pago.ContratoId });
                 
             }
             catch
