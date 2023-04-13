@@ -19,7 +19,7 @@ namespace Inmobiliaria.Net.Controllers
             return View(pagos);
         }
 
-
+   
      
 
         // GET: Inmuebles/Create
@@ -65,13 +65,12 @@ namespace Inmobiliaria.Net.Controllers
         // POST: Inmuebles/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Pago pago)
+        public ActionResult Pagar(Pago pago)
         {
             try
             {
-                // TODO: Add update logic here
                 
-                bdPagos.Actualizar(pago);
+                bdPagos.Pagar(pago);
                 return RedirectToAction(nameof(Index));
                 
             }
@@ -82,8 +81,6 @@ namespace Inmobiliaria.Net.Controllers
             }
         }
 
-        // GET: Inmuebles/Delete/5
-  
-
+         
     }
 }

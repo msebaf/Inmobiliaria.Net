@@ -79,16 +79,15 @@ public class BdPagos
                     {
                         Pago pago = new Pago
                         {
-                            Id = Convert.ToInt32(reader["Id"]),
-                            ContratoId = Convert.ToInt32(reader["contratoId"]),
-                           
-                            Monto = Convert.ToDouble(reader["Monto"]),
-                            Periodo = Convert.ToDateTime(reader["Periodo"])
+                            Id = reader.GetInt32(nameof(pago.Id)),
+                            ContratoId = reader.GetInt32(nameof(pago.ContratoId)),
                             
+                            Monto = reader.GetDouble(nameof(pago.Monto)),
+                            Periodo = reader.GetDateTime(nameof(pago.Periodo))
                         };
                         if (!reader.IsDBNull(reader.GetOrdinal("FechaPago")))
                             {
-                                pago.FechaPago = Convert.ToDateTime(reader["FechaPago"]);
+                                pago.FechaPago = reader.GetDateTime(nameof(pago.FechaPago));
                             }
                         Pagos.Add(pago);
                     }
@@ -137,14 +136,18 @@ public Pago GetPago(int id)
         return pago;
     }
    
-public static void pagar(int id){
+public void Pagar(Pago pago){
+    
     using (MySqlConnection connection = new MySqlConnection(connectionString2))
     {
-        var query = @"UPDATE pago SET contratoId=@contratoId, FechaPago=@FechaPago, Monto=@Monto, Periodo=@Periodo WHERE Id=@Id;";
+        var query = @"UPDATE pago SET FechaPago=@FechaPago WHERE Id=@Id;";
         using (var command = new MySqlCommand(query, connection))
         {
-            command.Parameters.AddWithValue("@Id", id);
+            command.Parameters.AddWithValue("@Id", pago.Id);
             command.Parameters.AddWithValue("@FechaPago", DateTime.Now);
+              connection.Open();
+               command.ExecuteNonQuery();
+                connection.Close();
         }
     }
 }
