@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Inmobiliaria.Net.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Inmobiliaria.Net.Controllers
 {
@@ -62,7 +63,9 @@ namespace Inmobiliaria.Net.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Contrato contrato)
         {
-            
+              var context = new ValidationContext(contrato, serviceProvider: null, items: null);
+            var isValid = Validator.TryValidateObject(contrato, context, null, true);
+            if(isValid){
             try
             {
                 // TODO: Add insert logic here
@@ -74,6 +77,16 @@ namespace Inmobiliaria.Net.Controllers
             catch
             {
                  
+                return View();
+            }
+            }else{
+                BdInmuebles bdInmu = new BdInmuebles();
+            BdInquilinos bdInqui = new BdInquilinos();
+                 ViewBag.inmuebles = bdInmu.Getinmuebles();
+                 ViewBag.inquilinos = bdInqui.Getinquilinos();
+                
+                
+                
                 return View();
             }
         }
