@@ -66,6 +66,12 @@ namespace Inmobiliaria.Net.Controllers
               var context = new ValidationContext(contrato, serviceProvider: null, items: null);
             var isValid = Validator.TryValidateObject(contrato, context, null, true);
             if(isValid){
+
+
+                int conts = bdContratos.GetContratoCrearValidador(contrato.FechaInicio, contrato.FechaFinal, contrato.InmuebleId);
+                if(conts==0){
+                    
+                
             try
             {
                 // TODO: Add insert logic here
@@ -77,6 +83,20 @@ namespace Inmobiliaria.Net.Controllers
             catch
             {
                  
+                return View();
+            }
+            }else{
+               
+                ModelState.AddModelError("FechaFinal", "El inmueble no esta disponible en este periodo");
+                
+        
+                  BdInmuebles bdInmu = new BdInmuebles();
+            BdInquilinos bdInqui = new BdInquilinos();
+                 ViewBag.inmuebles = bdInmu.Getinmuebles();
+                 ViewBag.inquilinos = bdInqui.Getinquilinos();
+                
+                
+                
                 return View();
             }
             }else{
@@ -111,18 +131,36 @@ namespace Inmobiliaria.Net.Controllers
              var context = new ValidationContext(contrato, serviceProvider: null, items: null);
             var isValid = Validator.TryValidateObject(contrato, context, null, true);
             if(isValid){
+            int conts = bdContratos.GetContratoEditarValidador(contrato.FechaInicio, contrato.FechaFinal, contrato.InmuebleId, contrato.Id);
+                if(conts==0){
+                    
+                
             try
             {
-                // TODO: Add update logic here
+                // TODO: Add insert logic here
+                int res = bdContratos.Actualizar(contrato);
                 
-                bdContratos.Actualizar(contrato);
+                
                 return RedirectToAction(nameof(Index));
-                
             }
             catch
             {
-           
+                 
                 return View();
+            }
+            }else{
+               
+                ModelState.AddModelError("FechaFinal", "El inmueble no esta disponible en este periodo");
+                
+        
+                  BdInmuebles bdInmu = new BdInmuebles();
+            BdInquilinos bdInqui = new BdInquilinos();
+                 ViewBag.inmuebles = bdInmu.Getinmuebles();
+                 ViewBag.inquilinos = bdInqui.Getinquilinos();
+                
+                
+                
+                return View(contrato);
             }
             }else{
                   {

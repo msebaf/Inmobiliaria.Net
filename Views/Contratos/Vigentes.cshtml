@@ -68,6 +68,7 @@
            </td>
            
             <td>
+                @Html.ActionLink("Renovar", "Renovar", new {  contrato =item }) |
                  @Html.ActionLink("Editar", "Edit", new {  id=item.Id })
                 @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
                 @Html.ActionLink("Borrar", "Delete", new { id=item.Id })

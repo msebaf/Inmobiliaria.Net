@@ -289,5 +289,47 @@ i.Direccion, i.Uso, i.Disponible, inq.Dni, inq.Nombre, inq.Apellido
     }
     return res;
     }
+
+
+
+  public int GetContratoEditarValidador(DateTime? inicio, DateTime? final, int? inmId, int? contratoId)
+{
+    int count = 0;
+    using (MySqlConnection connection = new MySqlConnection(connectionString))
+    {
+        var query = @"SELECT COUNT(*) FROM contrato 
+WHERE InmuebleId = @inmId AND (contrato.Id != @contratoId) AND ((@FechaInicio BETWEEN contrato.FechaInicio AND contrato.FechaFinal) OR (@FechaFinal BETWEEN contrato.FechaInicio AND contrato.FechaFinal))"; 
+        using (var command = new MySqlCommand(query, connection))
+        {
+            command.Parameters.AddWithValue("@inmId", inmId);
+            command.Parameters.AddWithValue("@FechaInicio", inicio);
+            command.Parameters.AddWithValue("@FechaFinal", final);
+            command.Parameters.AddWithValue("@contratoId", contratoId);
+            connection.Open();
+            count = Convert.ToInt32(command.ExecuteScalar());
+        }
+    }
+    return count;
+}
+
+public int GetContratoCrearValidador(DateTime? inicio, DateTime? final, int? inmId)
+{
+    int count = 0;
+    using (MySqlConnection connection = new MySqlConnection(connectionString))
+    {
+        var query = @"SELECT COUNT(*) FROM contrato 
+WHERE InmuebleId = @inmId  AND ((@FechaInicio BETWEEN contrato.FechaInicio AND contrato.FechaFinal) OR (@FechaFinal BETWEEN contrato.FechaInicio AND contrato.FechaFinal))"; 
+        using (var command = new MySqlCommand(query, connection))
+        {
+            command.Parameters.AddWithValue("@inmId", inmId);
+            command.Parameters.AddWithValue("@FechaInicio", inicio);
+            command.Parameters.AddWithValue("@FechaFinal", final);
+            
+            connection.Open();
+            count = Convert.ToInt32(command.ExecuteScalar());
+        }
+    }
+    return count;
+}
 }
 

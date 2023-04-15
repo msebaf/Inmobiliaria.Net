@@ -14,6 +14,7 @@ public class Contrato
   [Display(Name = "Fecha Final")]
     [DataType(DataType.Date)]
     [FechaActual(ErrorMessage = null)]
+  
     public DateTime? FechaFinal { get; set; }
     
     
@@ -50,7 +51,12 @@ public class FechaActualAttribute : ValidationAttribute
         {
             return new ValidationResult(ErrorMessage ?? $"La {validationContext.DisplayName} no puede ser menor que la fecha de inicio.");
         }
+        if(contrato.FechaFinal.HasValue && contrato.FechaInicio.HasValue)
+        {
+            
+        }
 
         return ValidationResult.Success;
     }
 }
+
