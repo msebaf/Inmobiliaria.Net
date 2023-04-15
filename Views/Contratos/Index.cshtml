@@ -9,18 +9,14 @@
     <thead>
         <tr>
         
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
+          
            <th>
                 <b>Inmueble</b> 
             </th>
             <th>
                 <b>Inquilino</b> 
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaInicio)
-            </th>
+        
             <th>
                 @Html.DisplayNameFor(model => model.FechaFinal)
             </th>
@@ -40,18 +36,14 @@
 @foreach (var item in Model) {
         <tr>
             
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
+         
            <td>
                 @item.inmueble.ToString()
             </td>
             <td>
                 @item.inquilino.ToString()
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaInicio)
-            </td>
+          
             <td>
                 @Html.DisplayFor(modelItem => item.FechaFinal)
             </td>

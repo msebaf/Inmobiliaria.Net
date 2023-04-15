@@ -22,9 +22,7 @@
     <thead>
         <tr>
         
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
+      
             <th>
                 @Html.DisplayNameFor(model => model.Tipo)
             </th>
@@ -40,9 +38,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Precio)
             </th>
-             <th>
-                @Html.DisplayNameFor(model => model.PropietarioId)
-            </th>
+           
               <th>
                 @Html.DisplayNameFor(model => model.Disponible)
             </th>
@@ -56,9 +52,7 @@
 @foreach (var item in Model) {
         <tr>
             
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
+      
             <td>
                 @Html.DisplayFor(modelItem => tiposMap[item.Tipo])
             </td>
@@ -74,9 +68,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Precio)
             </td>
-             <td>
-                @(item.Duenio.Nombre + " " + item.Duenio.Apellido)
-            </td>
+            
             <td>
                 @(item.Disponible? "Disponible" : "No Disponible")
             </td>
