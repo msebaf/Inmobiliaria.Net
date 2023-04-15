@@ -16,7 +16,9 @@ namespace Inmobiliaria.Net.Controllers
         {   
             if(id!= null){
             var pagos = bdPagos.GetPagos(id);
+            ViewBag.id = id;
             return View(pagos);
+
         }else{
                var pagos = bdPagos.GetPagos(null);
             return View(pagos);
@@ -118,6 +120,17 @@ namespace Inmobiliaria.Net.Controllers
         }
         
 
-         
+          public ActionResult PagarInm(int id)
+        {
+            BdContratos bdcCnts = new BdContratos();
+            
+           
+                Contrato contrato = bdcCnts.GetContrato(id);
+              ViewBag.mMensual = contrato.MontoMensual;
+              ViewBag.cId = id;
+                 
+            return View();
+        }
+
     }
 }

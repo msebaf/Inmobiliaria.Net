@@ -1,6 +1,11 @@
 @model IEnumerable<Inmobiliaria.Net.Models.Pago>
 
-
+@{
+    int? idCont=null;
+    if(ViewBag.id != null){
+        idCont = ViewBag.id;
+    }
+}
 
 <h1>Pagos</h1>
 
@@ -60,6 +65,8 @@
               
             </td>
         </tr>
+        
 }
     </tbody>
 </table>
+@Html.ActionLink("Pagar", "PagarInm", new { id= idCont})

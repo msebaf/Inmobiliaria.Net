@@ -9,6 +9,7 @@ public class Contrato
     public int? InquilinoId { get; set; }
 
   [DataType(DataType.Date)]
+  [Display(Name = "Fecha de Inicio")]
     public DateTime? FechaInicio { get; set; }
 
   [Display(Name = "Fecha Final")]
@@ -17,7 +18,7 @@ public class Contrato
   
     public DateTime? FechaFinal { get; set; }
     
-    
+    [Display(Name = "Monto")]
     public double? MontoMensual { get; set; }
     
     public Inmueble inmueble { get; set; }

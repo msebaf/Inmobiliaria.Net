@@ -1,21 +1,11 @@
-@model Inmobiliaria.Net.Models.Inmueble
+@model Inmobiliaria.Net.Models.Contrato
 
 @{
     ViewData["Title"] = "Details";
-     var tipos = (IList<Tipo>) ViewBag.tipos;
-    var usos = (IList<Uso>) ViewBag.usos;
-    Dictionary<int?, String?> tiposMap = new Dictionary<int?, String?>();
-    foreach (var item in tipos){
-        tiposMap.Add(item.Id, item.TipoInm);
-
-    }
-    Dictionary<int?, String?> usosMAp = new Dictionary<int?, String?>();
-    foreach (var item in usos){
-        usosMAp.Add(item.Id, item.UsoInm);
-    }
+  
 }
 
-<h1>Detalles de Inmueble</h1>
+<h1>Detalles de Contrato</h1>
 
 <div>
     <h4>Inmueble</h4>
@@ -28,59 +18,30 @@
             @Html.DisplayFor(model => model.Id)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Direccion)
+            @Html.DisplayNameFor(model => model.inmueble)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Direccion)
+            @(Model.inmueble.ToString())
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Uso)
+            @Html.DisplayNameFor(model => model.inquilino)
         </dt>
         <dd class = "col-sm-10">
-            @usosMAp[(int)Model.Uso]
+            @Model.inquilino.ToString()
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tipo)
+            @Html.DisplayNameFor(model => model.FechaInicio)
         </dt>
         <dd class = "col-sm-10">
-            @tiposMap[(int)Model.Tipo]
+             @Html.DisplayFor(model => model.FechaInicio)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CantidadDeAmbientes)
+            @Html.DisplayNameFor(model => model.FechaFinal)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CantidadDeAmbientes)
+            @Html.DisplayFor(model => model.FechaFinal)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Latitud)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Latitud)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Longitud)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Longitud)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Precio)
-        </dd>
-             <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Superficie)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Superficie)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PropietarioId)
-        </dt>
-        <dd class = "col-sm-10">
-             @(Model.Duenio.Nombre + " " + Model.Duenio.Apellido)
-        </dd>
+        
     </dl>
 </div>
 <div>
