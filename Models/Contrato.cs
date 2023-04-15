@@ -15,7 +15,8 @@ public class Contrato
     [DataType(DataType.Date)]
     [FechaActual(ErrorMessage = null)]
     public DateTime? FechaFinal { get; set; }
-  
+    
+    
     public double? MontoMensual { get; set; }
     
     public Inmueble inmueble { get; set; }

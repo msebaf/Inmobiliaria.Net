@@ -108,6 +108,9 @@ namespace Inmobiliaria.Net.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Contrato contrato)
         {
+             var context = new ValidationContext(contrato, serviceProvider: null, items: null);
+            var isValid = Validator.TryValidateObject(contrato, context, null, true);
+            if(isValid){
             try
             {
                 // TODO: Add update logic here
@@ -120,6 +123,17 @@ namespace Inmobiliaria.Net.Controllers
             {
            
                 return View();
+            }
+            }else{
+                  {
+            
+            BdInmuebles bdInmu = new BdInmuebles();
+            BdInquilinos bdInqui = new BdInquilinos();
+            ViewBag.inmuebles = bdInmu.Getinmuebles();
+            ViewBag.inquilinos = bdInqui.Getinquilinos();
+            
+            return View(contrato);
+        }
             }
         }
 
