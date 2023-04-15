@@ -9,10 +9,15 @@ public class Contrato
     public DateTime? FechaFinal { get; set; }
   
     public double? MontoMensual { get; set; }
+    
     public Inmueble inmueble { get; set; }
     public Inquilino inquilino { get; set; }
     
 
 
     public Contrato(){}
+
+   public override string ToString(){
+    return $"{InmuebleId} {InquilinoId}";
+   }
 }

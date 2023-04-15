@@ -23,8 +23,17 @@ namespace Inmobiliaria.Net.Controllers
         {   
             
             var contratos = bdContratos.GetContratosVigentes();
+           
+        return View(contratos);
+        }
+
+        public ActionResult Vencidos()
+        {   
+            
+            var contratos = bdContratos.GetContratosVencidos();
             return View(contratos);
         }
+
 
         // GET: Inmuebles/Details/5
         public ActionResult Details(int id)
@@ -58,22 +67,7 @@ namespace Inmobiliaria.Net.Controllers
             {
                 // TODO: Add insert logic here
                 int res = bdContratos.Alta(contrato);
-                 DateTime? cuota = contrato.FechaInicio;
-                BdPagos bdp = new BdPagos();
-                while (cuota.Value.Month <= contrato.FechaFinal.Value.Month)
-                {
-                    Pago pago = new Pago{
-                        ContratoId = res,
-                       
-                        Periodo = cuota.Value,
-                        Monto = contrato.MontoMensual
-                        
-
-                    };
-                   int pagoID = bdp.Alta(pago);
-                    cuota = cuota.Value.AddMonths(1);
-                }
-               
+                
                 
                 return RedirectToAction(nameof(Index));
             }

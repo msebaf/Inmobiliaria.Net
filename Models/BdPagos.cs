@@ -4,8 +4,8 @@ namespace Inmobiliaria.Net.Models;
 
 public class BdPagos
 {
+    
     String connectionString = "Server=localhost;User=root;Password=;Database=inmobiliaria.net;SslMode=none";
-    static String connectionString2 = "Server=localhost;User=root;Password=;Database=inmobiliaria.net;SslMode=none";
 
     public BdPagos()
     {
@@ -17,19 +17,19 @@ public class BdPagos
         int res = 0;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            var query = @"INSERT INTO pago (contratoId, Monto, Periodo)
-            values (@contratoId, @Monto, @Periodo);
+            var query = @"INSERT INTO pago (ContratoId, Monto, FechaPago, Periodo)
+        VALUES (@ContratoId, @Monto, @FechaPago, @Periodo);
         SELECT LAST_INSERT_ID();";
             using (var command = new MySqlCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@contratoId", pago.ContratoId);
-               
+                command.Parameters.AddWithValue("@ContratoId", pago.ContratoId);
                 command.Parameters.AddWithValue("@Monto", pago.Monto);
+                command.Parameters.AddWithValue("@FechaPago", pago.FechaPago);
                 command.Parameters.AddWithValue("@Periodo", pago.Periodo);
                 
 
                 connection.Open();
-                res = Convert.ToInt32(command.ExecuteScalar());
+                res = command.ExecuteNonQuery();
                 connection.Close();
                 pago.Id = res;
             }
@@ -42,13 +42,13 @@ public class BdPagos
         int res = 0;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            var query = @"UPDATE pago SET contratoId=@contratoId, FechaPago=@FechaPago, Monto=@Monto, Periodo=@Periodo WHERE Id=@Id;";
+            var query = @"UPDATE pago SET ContratoId=@ContratoId, Monto=@Monto, FechaPago=@FechaPago, Periodo=@Periodo WHERE Id=@Id;";
             using (var command = new MySqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Id", pago.Id);
-                command.Parameters.AddWithValue("@contratoId", pago.ContratoId);
-                command.Parameters.AddWithValue("@FechaPago", pago.FechaPago);
+                command.Parameters.AddWithValue("@ContratoId", pago.ContratoId);
                 command.Parameters.AddWithValue("@Monto", pago.Monto);
+                command.Parameters.AddWithValue("@FechaPago", pago.FechaPago);
                 command.Parameters.AddWithValue("@Periodo", pago.Periodo);
 
                 connection.Open();
@@ -60,18 +60,19 @@ public class BdPagos
         return res;
     }
 
-    public List<Pago>GetPagos(int id)
+    public List<Pago>GetPagos(int? id)
+    
     {
-
-        List<Pago> Pagos = new List<Pago>();
+        List<Pago> pagos = new List<Pago>();
+        if(id != null){
+       
 
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            var query = @"SELECT pago.Id, pago.contratoId, pago.FechaPago, pago.Monto, pago.Periodo 
-            FROM pago where contratoId=@id;";
+            var query = @"SELECT Id,  Monto, FechaPago, Periodo FROM pago WHERE ContratoId=@id;";
             using (var command = new MySqlCommand(query, connection))
             {
-                 command.Parameters.AddWithValue("@id", id);
+                  command.Parameters.AddWithValue("@id", id);
                 connection.Open();
                 using (var reader = command.ExecuteReader())
                 {
@@ -79,37 +80,69 @@ public class BdPagos
                     {
                         Pago pago = new Pago
                         {
-                            Id = reader.GetInt32(nameof(pago.Id)),
-                            ContratoId = reader.GetInt32(nameof(pago.ContratoId)),
+                            Id = reader.GetInt32("Id"),
+                            ContratoId = id,
+                            Monto = reader.GetDouble("Monto"),
+                            FechaPago = reader.GetDateTime("FechaPago"),
+                            Periodo = reader.GetDateTime("Periodo")
                             
-                            Monto = reader.GetDouble(nameof(pago.Monto)),
-                            Periodo = reader.GetDateTime(nameof(pago.Periodo))
                         };
-                        if (!reader.IsDBNull(reader.GetOrdinal("FechaPago")))
-                            {
-                                pago.FechaPago = reader.GetDateTime(nameof(pago.FechaPago));
-                            }
-                        Pagos.Add(pago);
+                        pagos.Add(pago);
+                    }
+                }
+
+            }
+            connection.Close();
+        }}else{
+            
+
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            var query = @"SELECT Id,  Monto, FechaPago, Periodo, ContratoId FROM pago ;";
+            using (var command = new MySqlCommand(query, connection))
+            {
+                 
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Pago pago = new Pago
+                        {
+                            Id = reader.GetInt32("Id"),
+                            ContratoId = reader.GetInt32("ContratoId"),
+                            Monto = reader.GetDouble("Monto"),
+                            FechaPago = reader.GetDateTime("FechaPago"),
+                            Periodo = reader.GetDateTime("Periodo")
+                            
+                        };
+                        pagos.Add(pago);
                     }
                 }
 
             }
             connection.Close();
         }
-        return Pagos;
+        }
+        return pagos;
     }
+    
 
-public Pago GetPago(int id)
+   
+
+    
+
+     public Pago GetPago(int id)
     {
 
         Pago pago = null;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            var query = @"SELECT Id, contratoId, FechaPago, MontoMensual, Periodo FROM pago WHERE Id=@id;";
+            var query = @"SELECT Id, ContratoId, Monto, FechaPago, Periodo FROM pago WHERE Id=@id;";
             using (var command = new MySqlCommand(query, connection))
            
             {
-                 command.Parameters.AddWithValue("@id", id);
+                 command.Parameters.AddWithValue("@Id", id);
                 connection.Open();
                 using (var reader = command.ExecuteReader())
                 {
@@ -117,13 +150,11 @@ public Pago GetPago(int id)
                     {
                         pago = new Pago
                         {
-                            Id = Convert.ToInt32(reader["Id"]),
-                            ContratoId = Convert.ToInt32(reader["contratoId"]),
-                            FechaPago = Convert.ToDateTime(reader["FechaPago"]),
-                            Monto = Convert.ToDouble(reader["MontoMensual"]),
-                            Periodo = Convert.ToDateTime(reader["Periodo"])
-                        
-                         
+                           Id = reader.GetInt32("Id"),
+                            ContratoId = reader.GetInt32("ContratoId"),
+                            Monto = reader.GetDouble("Monto"),
+                            FechaPago = reader.GetDateTime("FechaPago"),
+                            Periodo = reader.GetDateTime("Periodo")
                             
                         };
                         
@@ -135,26 +166,29 @@ public Pago GetPago(int id)
         }
         return pago;
     }
-   
-public void Pagar(Pago pago){
+
+
     
-    using (MySqlConnection connection = new MySqlConnection(connectionString2))
+
+     public int DeletePago(int id)
     {
-        var query = @"UPDATE pago SET FechaPago=@FechaPago WHERE Id=@Id;";
-        using (var command = new MySqlCommand(query, connection))
+
+       int res = 0;
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            command.Parameters.AddWithValue("@Id", pago.Id);
-            command.Parameters.AddWithValue("@FechaPago", DateTime.Now);
-              connection.Open();
-               command.ExecuteNonQuery();
-                connection.Close();
+            var query = @"Delete from pago where Id = @id";
+            using (var command = new MySqlCommand(query, connection))
+           
+            {
+                 command.Parameters.AddWithValue("@id", id);
+                connection.Open();
+                res = command.ExecuteNonQuery();
+            connection.Close();
         }
+        
+    }
+    return res;
     }
 }
-    
 
-
-
- 
-}
 

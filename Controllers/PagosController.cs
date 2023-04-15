@@ -12,24 +12,27 @@ namespace Inmobiliaria.Net.Controllers
     {
         public readonly BdPagos bdPagos = new BdPagos();
         // GET: Inmuebles
-        public ActionResult Index(int id)
+        public ActionResult Index(int? id)
         {   
-            
+            if(id!= null){
             var pagos = bdPagos.GetPagos(id);
             return View(pagos);
+        }else{
+               var pagos = bdPagos.GetPagos(null);
+            return View(pagos);
+        }
         }
 
-   
-     
+    
 
         // GET: Inmuebles/Create
         public ActionResult Create()
         {
-            BdInmuebles bdInmu = new BdInmuebles();
-            BdInquilinos bdInqui = new BdInquilinos();
+            BdContratos bdcCnts = new BdContratos();
+            
            
-                 ViewBag.inmuebles = bdInmu.Getinmuebles();
-                 ViewBag.inquilinos = bdInqui.Getinquilinos();
+                 ViewBag.contratos = bdcCnts.GetContratos();
+             
                  
             return View();
         }
@@ -39,12 +42,13 @@ namespace Inmobiliaria.Net.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Pago pago)
         {
+            int? idCont= pago.ContratoId;
             try
             {
                 // TODO: Add insert logic here
                 int res = bdPagos.Alta(pago);
                 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = idCont });
             }
             catch
             {
@@ -56,22 +60,26 @@ namespace Inmobiliaria.Net.Controllers
         // GET: Inmuebles/Edit/5
         public ActionResult Edit(int id)
         {
+            BdContratos bdcCnts = new BdContratos();
+            
+           
+                 ViewBag.contratos = bdcCnts.GetContratos();
             var contrato = bdPagos.GetPago(id);
            
             
             return View(contrato);
         }
 
-        // POST: Inmuebles/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Pagar(Pago pago)
+        public ActionResult Edit(Pago pago)
         {
             try
             {
+                // TODO: Add update logic here
                 
-                bdPagos.Pagar(pago);
-                return RedirectToAction("Index",  new { id = pago.ContratoId });
+                bdPagos.Actualizar(pago);
+                return RedirectToAction("Index", new { id = pago.ContratoId });
                 
             }
             catch
@@ -80,6 +88,35 @@ namespace Inmobiliaria.Net.Controllers
                 return View();
             }
         }
+
+       
+
+        // GET: Inmuebles/Delete/5
+        public ActionResult Delete(int id)
+        {
+           
+           Pago pago =  bdPagos.GetPago(id);
+            return View(pago);
+        }
+
+        // POST: Inmuebles/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, Pago pago)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+                bdPagos.DeletePago(id);
+
+                 return RedirectToAction("Index", new { id = pago.ContratoId });
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        
 
          
     }

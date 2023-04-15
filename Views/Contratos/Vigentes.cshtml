@@ -2,7 +2,7 @@
 
 
 
-<h1>Contratos</h1>
+<h1>Contratos Vigentes</h1>
 
 
 <table class="table">
@@ -13,10 +13,10 @@
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InmuebleId)
+                <b>Inmueble</b> 
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InquilinoId)
+                <b>Inquilino</b> 
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FechaInicio)
@@ -27,13 +27,11 @@
             <th>
                 @Html.DisplayNameFor(model => model.MontoMensual)
             </th>
-            <td>
-                <b>Estado de Cuenta</b> 
-            </td>
-            <td>
+            
+              <th>
                 <b>Pagos</b>
 
-            </td>
+            </th>
              
             
           
@@ -48,10 +46,10 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.InmuebleId)
+                @item.inmueble.ToString()
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.InquilinoId)
+                @item.inquilino.ToString()
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FechaInicio)
@@ -62,15 +60,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.MontoMensual)
             </td>
-            <td>
-                // completar con si esta al dia
-            </td>
+           
            <td>
             
-             @Html.ActionLink("Pagos",  "Index","Pagos", new { id = item.Id }, null) 
+             @Html.ActionLink("Pagos",  "Index", "Pagos", new { id = item.Id }, null) 
            
            </td>
-            
            
             <td>
                  @Html.ActionLink("Editar", "Edit", new {  id=item.Id })

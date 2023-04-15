@@ -1,9 +1,8 @@
-@model Inmobiliaria.Net.Models.Contrato
+@model Inmobiliaria.Net.Models.Pago
 
 @{
     ViewData["Title"] = "Delete";
-  var Inm = (Inmueble) ViewBag.inmueble;
-    var inqs = (Inquilino) ViewBag.inquilino;
+    
 
     
 }
@@ -22,40 +21,39 @@
             @Html.DisplayFor(model => model.Id)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InmuebleId)
+            @Html.DisplayNameFor(model => model.ContratoId)
         </dt>
         <dd class = "col-sm-10">
-            @Inm.ToString();
+            @Html.DisplayFor(model => model.ContratoId)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InquilinoId)
+            @Html.DisplayNameFor(model => model.Periodo)
         </dt>
         <dd class = "col-sm-10">
-            @inqs.ToString()
+            @Html.DisplayFor(model => model.Periodo)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaInicio)
+            @Html.DisplayNameFor(model => model.FechaPago)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaInicio)
+            @Html.DisplayFor(model => model.FechaPago)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaFinal)
+            @Html.DisplayNameFor(model => model.Monto)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaFinal)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MontoMensual)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MontoMensual)
-        </dd>
+            @Html.DisplayFor(model => model.Monto)
+     
         
         
     </dl>
     
     <form asp-action="Delete">
+         <div class="form-group">
+                
+                <input asp-for="ContratoId" class="form-control" hidden />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">VOLVER</a>
     </form>
