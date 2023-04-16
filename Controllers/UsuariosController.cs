@@ -114,11 +114,11 @@ namespace Inmobiliaria.Net.Controllers
 			ViewData["Title"] = "Mi perfil";
 			var u = bdUsuarios.ObtenerPorEmail(User.Identity.Name);
 			ViewBag.Roles = Usuario.ObtenerRoles();
-			return View("Edit", u);
+			return View(u);
 		}
 
 		// GET: Usuarios/Edit/5
-		[Authorize(Policy = "Administrador")]
+		//[Authorize(Policy = "Administrador")]
 		public ActionResult Edit(int id)
 		{
 			ViewData["Title"] = "Editar usuario";
@@ -126,6 +126,8 @@ namespace Inmobiliaria.Net.Controllers
 			ViewBag.Roles = Usuario.ObtenerRoles();
 			return View(u);
 		}
+
+
 
 		// POST: Usuarios/Edit/5
 		[HttpPost]

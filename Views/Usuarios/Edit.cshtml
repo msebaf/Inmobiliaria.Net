@@ -37,7 +37,7 @@
 				<input asp-for="Clave" class="form-control" />
 				<span asp-validation-for="Clave" class="text-danger"></span>
 			</div>
-			@if (User.IsInRole("Administrador") || User.IsInRole("SuperAdministrador"))
+			@if (User.IsInRole("Administrador"))
 			{
 				<div class="form-group">
 					<label class="control-label">Rol</label>
@@ -72,11 +72,3 @@
 	<a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-@section Styles {
-	<!--Posible estilo aplicable solo a esta página-->
-	<!--esta sección se renderiza en el layout donde dice RenderSection("Styles", false)-->
-	<!--<link href="~/css/forms.css" rel="stylesheet" />-->
-}
