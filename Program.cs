@@ -1,7 +1,38 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Inmobiliaria.Net.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Inmobiliaria.Net.Controllers;
+using Microsoft.AspNetCore.SignalR;
+
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+	.AddCookie(options =>//el sitio web valida con cookie
+	{
+		options.LoginPath = "/Usuarios/Login";
+		options.LogoutPath = "/Usuarios/Logout";
+		options.AccessDeniedPath = "/Home/Restringido";
+		//options.ExpireTimeSpan = TimeSpan.FromMinutes(5);//Tiempo de expiración
+	});
+
+    builder.Services.AddAuthorization(options =>
+{
+	//options.AddPolicy("Empleado", policy => policy.RequireClaim(ClaimTypes.Role, "Administrador", "Empleado"));
+	options.AddPolicy("Administrador", policy => policy.RequireRole("Administrador", "Empleado"));
+});
+
 
 var app = builder.Build();
 
@@ -18,6 +49,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
