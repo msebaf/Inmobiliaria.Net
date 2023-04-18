@@ -169,7 +169,7 @@ public class BdPagos
 
 
     
-
+    
      public int DeletePago(int id)
     {
 

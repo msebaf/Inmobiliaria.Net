@@ -19,6 +19,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Inmobiliaria.Net.Controllers
 {
+	[Authorize]
         public class UsuariosController : Controller
 	{
 		private readonly IConfiguration configuration;
@@ -117,6 +118,54 @@ namespace Inmobiliaria.Net.Controllers
 			return View(u);
 		}
 
+		[Authorize]
+		[HttpPost]
+		public ActionResult CambiarContrasenia(int idUs,String NContra, String NControl, String UCVieja, String Clave){ 
+
+			string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+								password: UCVieja,
+								salt: System.Text.Encoding.ASCII.GetBytes(configuration["Salt"]),
+								prf: KeyDerivationPrf.HMACSHA1,
+								iterationCount: 1000,
+								numBytesRequested: 256 / 8));
+				UCVieja = hashed;
+			
+			if(UCVieja == Clave){
+				if(NContra==NControl){
+					
+					 hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+								password: NContra,
+								salt: System.Text.Encoding.ASCII.GetBytes(configuration["Salt"]),
+								prf: KeyDerivationPrf.HMACSHA1,
+								iterationCount: 1000,
+								numBytesRequested: 256 / 8));
+				NContra = hashed;
+					
+					 ViewBag.error = "Contraseña actualizada";
+					 ViewBag.Roles = Usuario.ObtenerRoles();
+					 bdUsuarios.ActualizarContraseña(idUs, NContra);
+					 Usuario u = bdUsuarios.ObtenerPorId(idUs);
+					return 	View("Edit", u);
+					
+				}else{
+					 ViewBag.error= "Las contraseñas no coinciden";
+					 ViewBag.Roles = Usuario.ObtenerRoles();
+					
+					 Usuario u = bdUsuarios.ObtenerPorId(idUs);
+					return 	View("Edit", u);
+				}
+
+
+				
+			}else{
+				 ViewBag.error= "Las contraseñas no coinciden";
+				ViewBag.Roles = Usuario.ObtenerRoles();
+				 Usuario u = bdUsuarios.ObtenerPorId(idUs);
+					return 	View("Edit", u);
+				}
+			}
+		
+		
 		// GET: Usuarios/Edit/5
 		//[Authorize(Policy = "Administrador")]
 		public ActionResult Edit(int id)
@@ -132,7 +181,7 @@ namespace Inmobiliaria.Net.Controllers
 		// POST: Usuarios/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Authorize]
+		[Authorize]	
 		public ActionResult Edit(int id, Usuario u)
 		{
 			var vista = nameof(Edit);//de que vista provengo
@@ -146,6 +195,43 @@ namespace Inmobiliaria.Net.Controllers
 						return RedirectToAction(nameof(Index), "Home");
 				}
 				// TODO: Add update logic here
+				if(u.AvatarFile != null){
+					if(u.Avatar!=null){
+						        string avatarPath = Path.Combine(environment.WebRootPath, u.Avatar.TrimStart('/')); // construir la ruta adecuada agregando wwwRootPath y eliminando el primer slash en u.Avatar
+						 System.IO.File.Delete(avatarPath);
+						 using (FileStream stream = new FileStream(avatarPath, FileMode.Create))
+					{
+						u.AvatarFile.CopyTo(stream);
+					}
+
+					}else{
+						string wwwPath = environment.WebRootPath;
+					string path = Path.Combine(wwwPath, "Uploads");
+					if (!Directory.Exists(path))
+					{
+						Directory.CreateDirectory(path);
+					}
+					//Path.GetFileName(usuario.AvatarFile.FileName);//este nombre se puede repetir
+					string fileName = "avatar_" + u.Id + Path.GetExtension(u.AvatarFile.FileName);
+					string pathCompleto = Path.Combine(path, fileName);
+					u.Avatar = Path.Combine("/Uploads", fileName);
+					// Esta operación guarda la foto en memoria en la ruta que necesitamos
+					using (FileStream stream = new FileStream(pathCompleto, FileMode.Create))
+					{
+						u.AvatarFile.CopyTo(stream);
+					}
+					}
+					
+
+				}
+				/*string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+								password: u.Clave,
+								salt: System.Text.Encoding.ASCII.GetBytes(configuration["Salt"]),
+								prf: KeyDerivationPrf.HMACSHA1,
+								iterationCount: 1000,
+								numBytesRequested: 256 / 8));
+				u.Clave = hashed;*/
+				bdUsuarios.Modificacion(u);
 
 				return RedirectToAction(vista);
 			}
@@ -220,6 +306,7 @@ namespace Inmobiliaria.Net.Controllers
 
 		[AllowAnonymous]
 		// GET: Usuarios/Login/
+		
 		public ActionResult Login(string returnUrl)
 		{
 			TempData["returnUrl"] = returnUrl;
@@ -288,5 +375,5 @@ namespace Inmobiliaria.Net.Controllers
 		}
 	}
         
-	
+
 }

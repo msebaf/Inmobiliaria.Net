@@ -12,7 +12,7 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
+           N° de Contrato
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Id)
@@ -46,6 +46,10 @@
 </div>
 <div>
     @Html.ActionLink("EDITAR", "Edit", new {  id = Model.Id}) |
-    @Html.ActionLink("BORRAR", "Delete", new { id = Model.Id }) |
+  
     <a asp-action="Index">VOLVER</a>
+    @if (User.IsInRole("Administrador"))
+    {
+          @Html.ActionLink("BORRAR", "Delete", new { id = Model.Id }) 
+    }
 </div>

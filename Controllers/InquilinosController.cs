@@ -5,9 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Inmobiliaria.Net.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Inmobiliaria.Net.Controllers
 {
+    [Authorize]
     public class InquilinosController : Controller
     {
         public readonly BdInquilinos bdInquilinos = new BdInquilinos();
@@ -75,6 +80,8 @@ namespace Inmobiliaria.Net.Controllers
         }
 
         // GET: Inquilinos/Delete/5
+        [Authorize(Policy = "Administrador")]
+        
         public ActionResult Delete(int id)
         {
            var prop =  bdInquilinos.Getinquilino(id);
@@ -84,6 +91,7 @@ namespace Inmobiliaria.Net.Controllers
         // POST: Inquilinos/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id, Inquilino inquilino)
         {
             try

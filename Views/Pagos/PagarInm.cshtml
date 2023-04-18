@@ -24,13 +24,13 @@
             
  <div class="form-group">
                 <label asp-for="Periodo" class="control-label"></label>
-                <input asp-for="Periodo" class="form-control" required/>
+                <input asp-for="Periodo" type="Month" value="@DateTime.Now.ToString("yyyy-MM")" class="form-control" required/>
                 <span asp-validation-for="Periodo" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="FechaPago" class="control-label"></label>
-                <input asp-for="FechaPago"  class="form-control" required/>
+                <input asp-for="FechaPago" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")"   class="form-control" required/>
                 <span asp-validation-for="FechaPago" class="text-danger"></span>
             </div>
 

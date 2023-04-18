@@ -36,7 +36,7 @@ public class Usuario
     public string? Email { get; set; }
 
     [NotMapped]
-    public IFormFile AvatarFile { get; set; }
+    public IFormFile? AvatarFile { get; set; }
 		//[NotMapped]//Para EF
 		//public byte[] AvatarFileContent { get; set; }
 		//[NotMapped]//Para EF

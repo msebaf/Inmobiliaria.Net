@@ -10,7 +10,7 @@
         <tr>
         
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                N° de Contrato
             </th>
             <th>
                 <b>Inmueble</b> 
@@ -71,7 +71,10 @@
                 @Html.ActionLink("Renovar", "Renovar", new {  id = item.Id }) |
                  @Html.ActionLink("Editar", "Edit", new {  id=item.Id })|
                 @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
+                @if (User.IsInRole("Administrador"))
+    {
+          @Html.ActionLink("BORRAR", "Delete", new { id = item.Id }) 
+    }
             </td>
         </tr>
 }

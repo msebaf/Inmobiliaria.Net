@@ -71,7 +71,7 @@ public class BdUsuarios
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				string sql = @"UPDATE usuario 
-					SET Nombre=@nombre, Apellido=@apellido, Avatar=@avatar, Email=@email, Clave=@clave, Rol=@rol
+					SET Nombre=@nombre, Apellido=@apellido, Avatar=@avatar, Email=@email, Rol=@rol
 					WHERE Id = @id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
@@ -111,11 +111,18 @@ public class BdUsuarios
 							Id = reader.GetInt32("Id"),
 							Nombre = reader.GetString("Nombre"),
 							Apellido = reader.GetString("Apellido"),
-							Avatar = reader.GetString("Avatar"),
 							Email = reader.GetString("Email"),
 							Clave = reader.GetString("Clave"),
 							Rol = reader.GetInt32("Rol"),
+						
 						};
+							if (reader.IsDBNull(reader.GetOrdinal("Avatar")))
+							{
+								usuario.Avatar = null;
+								
+							}else{
+							usuario.Avatar = reader.GetString("Avatar");
+							}
 						res.Add(usuario);
 					}
 					connection.Close();
@@ -145,11 +152,18 @@ public class BdUsuarios
 							Id = reader.GetInt32("Id"),
 							Nombre = reader.GetString("Nombre"),
 							Apellido = reader.GetString("Apellido"),
-							Avatar = reader.GetString("Avatar"),
+						
 							Email = reader.GetString("Email"),
 							Clave = reader.GetString("Clave"),
 							Rol = reader.GetInt32("Rol"),
 						};
+						if (reader.IsDBNull(reader.GetOrdinal("Avatar")))
+							{
+								usuario.Avatar = null;
+								
+							}else{
+							usuario.Avatar = reader.GetString("Avatar");
+							}
 					}
 					connection.Close();
 				}
@@ -177,16 +191,39 @@ public class BdUsuarios
 							Id = reader.GetInt32("Id"),
 							Nombre = reader.GetString("Nombre"),
 							Apellido = reader.GetString("Apellido"),
-							Avatar = reader.GetString("Avatar"),
+							
 							Email = reader.GetString("Email"),
 							Clave = reader.GetString("Clave"),
 							Rol = reader.GetInt32("Rol"),
 						};
+						if (reader.IsDBNull(reader.GetOrdinal("Avatar")))
+							{
+								usuario.Avatar = null;
+								
+							}else{
+							usuario.Avatar = reader.GetString("Avatar");
+							}
 					}
 					connection.Close();
 				}
 			}
 			return usuario;
+		}
+
+		public void ActualizarContraseña(int id, String Contra){
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				string sql = @"UPDATE usuario SET Clave=@clave WHERE Id=@id";
+				using (MySqlCommand command = new MySqlCommand(sql, connection))
+				{
+					command.Parameters.AddWithValue("@clave", Contra);
+					command.Parameters.AddWithValue("@id", id);
+					connection.Open();
+					command.ExecuteNonQuery();
+					connection.Close();
+					
+				}
+			}
 		}
 
         

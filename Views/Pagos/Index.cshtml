@@ -14,11 +14,9 @@
     <thead>
         <tr>
         
+         
             <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContratoId)
+                N° de Contrato
             </th>
           
             <th>
@@ -39,9 +37,7 @@
 @foreach (var item in Model) {
         <tr>
             
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
+          
             <td>
                 @Html.DisplayFor(modelItem => item.ContratoId)
             </td>
@@ -61,7 +57,11 @@
             <td>
                 @Html.ActionLink("Editar", "Edit", new {  id=item.Id }) |
                 @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
+                @if (User.IsInRole("Administrador"))
+                {
+                    @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
+                }
+                
               
             </td>
         </tr>
@@ -69,4 +69,4 @@
 }
     </tbody>
 </table>
-@Html.ActionLink("Pagar", "PagarInm", new { id= idCont})
+@Html.ActionLink("Nuevo Pago", "Create")

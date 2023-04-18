@@ -6,9 +6,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Inmobiliaria.Net.Models;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+
 
 namespace Inmobiliaria.Net.Controllers
 {
+    [Authorize]
     public class ContratosController : Controller
     {
         public readonly BdContratos bdContratos = new BdContratos();
@@ -176,6 +182,7 @@ namespace Inmobiliaria.Net.Controllers
         }
 
         // GET: Inmuebles/Delete/5
+        [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id)
         {
            var contrato =  bdContratos.GetContrato(id);
@@ -190,6 +197,7 @@ namespace Inmobiliaria.Net.Controllers
         // POST: Inmuebles/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id, Contrato contrato)
         {
             try

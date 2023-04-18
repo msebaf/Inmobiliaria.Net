@@ -9,7 +9,9 @@
     <thead>
         <tr>
         
-          
+          <th>
+                N° de Contrato
+            </th>
            <th>
                 <b>Inmueble</b> 
             </th>
@@ -36,7 +38,9 @@
 @foreach (var item in Model) {
         <tr>
             
-         
+          <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
            <td>
                 @item.inmueble.ToString()
             </td>
@@ -62,7 +66,10 @@
                  @Html.ActionLink("Renovar", "Renovar", new {  id = item.Id }) |
                 @Html.ActionLink("Editar", "Edit", new {  id=item.Id }) |
                 @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
+                 @if (User.IsInRole("Administrador"))
+    {
+          @Html.ActionLink("BORRAR", "Delete", new { id = item.Id }) 
+    }
             </td>
         </tr>
 }
