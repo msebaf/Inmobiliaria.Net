@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-04-2023 a las 20:37:34
+-- Tiempo de generación: 19-04-2023 a las 17:39:39
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -116,7 +116,7 @@ CREATE TABLE `inmueble` (
 --
 
 INSERT INTO `inmueble` (`Id`, `Direccion`, `Uso`, `Tipo`, `CantidadDeAmbientes`, `Latitud`, `Longitud`, `Superficie`, `Precio`, `PropietarioId`, `Disponible`) VALUES
-(1, 'dfdsf', 1, 0, 3, '21', '2', '0', '23', 1, 1),
+(1, 'dfdsf', 1, 0, 3, '21', '2', '0', '23', 1, 0),
 (4, '23', 0, 3, 4, '2323', '4324', '3524', '4', 3, 0);
 
 -- --------------------------------------------------------
@@ -170,7 +170,8 @@ INSERT INTO `pago` (`Id`, `ContratoId`, `Monto`, `FechaPago`, `Periodo`) VALUES
 (19, 9, '324', '2023-04-28 18:03:00', '2023-04-24 18:03:00'),
 (22, 58, '-5', '2023-04-27 15:34:00', '2023-04-12 00:00:00'),
 (23, 58, '-5', '2023-04-26 15:34:00', '2023-05-24 00:00:00'),
-(24, 58, '-5', '2023-04-20 00:00:00', '2023-04-18 00:00:00');
+(24, 58, '-5', '2023-04-20 00:00:00', '2023-04-18 00:00:00'),
+(25, 58, '0', '2023-04-16 00:00:00', '2023-04-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -197,6 +198,25 @@ INSERT INTO `propietario` (`Id`, `Dni`, `Nombre`, `Apellido`, `Direccion`, `Tele
 (1, '435346', 'paco', 'perez', 'sad23', '3214234', 'fdf', '2023-03-09 23:06:46'),
 (3, '432', 'pepo', 'pog', 'dfs', '3242', 'fdwsfw', '2023-03-15 23:45:00'),
 (6, '12323213', 'weewew', 'weewew', 'wqwq', 'fsdf', 'wqweq@gg.com', '2023-04-20 04:46:00');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rol`
+--
+
+CREATE TABLE `rol` (
+  `Id` int(11) NOT NULL,
+  `Rol` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `rol`
+--
+
+INSERT INTO `rol` (`Id`, `Rol`) VALUES
+(1, 'Administrador'),
+(2, 'Empleado');
 
 -- --------------------------------------------------------
 
@@ -237,6 +257,31 @@ CREATE TABLE `uso` (
 INSERT INTO `uso` (`Id`, `Uso`) VALUES
 (0, 'Residencial'),
 (1, 'Comercial');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `Id` int(11) NOT NULL,
+  `Nombre` varchar(50) NOT NULL,
+  `Apellido` varchar(50) NOT NULL,
+  `Avatar` varchar(500) DEFAULT NULL,
+  `Clave` varchar(400) NOT NULL,
+  `Email` varchar(150) NOT NULL,
+  `Rol` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`Id`, `Nombre`, `Apellido`, `Avatar`, `Clave`, `Email`, `Rol`) VALUES
+(14, 'Pepo', 'Perez', '/Uploads\\avatar_14.jpg', 'fhe7M4Zu6NAgI1wFENYAIiJoKCA3fnbwo9XIn5rCcaM=', 'peperez@hotmail.com', 1),
+(15, 'aaaa', 'aaaa', NULL, 'c8ZiP1sscvDR5wzAeehv8fqG8dWJJHEBZsC0tGbfA+A=', 'a@a.com', 2),
+(17, 'pepa', 'pig', '/Uploads\\avatar_17.jpg', 'd0MySxrsoOs4J0+LpIV1h1QfH/qko1Etz93g0/tKoN8=', 'ppig@hotmail.com', 2);
 
 --
 -- Índices para tablas volcadas
@@ -293,6 +338,12 @@ ALTER TABLE `uso`
   ADD PRIMARY KEY (`Id`);
 
 --
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`Id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -318,7 +369,7 @@ ALTER TABLE `inquilino`
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `propietario`
@@ -337,6 +388,12 @@ ALTER TABLE `tipo`
 --
 ALTER TABLE `uso`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Restricciones para tablas volcadas

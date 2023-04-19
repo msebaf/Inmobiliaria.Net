@@ -121,6 +121,8 @@ namespace Inmobiliaria.Net.Controllers
 		[Authorize]
 		[HttpPost]
 		public ActionResult CambiarContrasenia(int idUs,String NContra, String NControl, String UCVieja, String Clave){ 
+			var vista = nameof(Edit);
+			 TempData["error"] = "a";
 
 			string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
 								password: UCVieja,
@@ -141,27 +143,27 @@ namespace Inmobiliaria.Net.Controllers
 								numBytesRequested: 256 / 8));
 				NContra = hashed;
 					
-					 ViewBag.error = "Contraseña actualizada";
+					 TempData["error"] = "Contraseña actualizada";
 					 ViewBag.Roles = Usuario.ObtenerRoles();
 					 bdUsuarios.ActualizarContraseña(idUs, NContra);
 					 Usuario u = bdUsuarios.ObtenerPorId(idUs);
-					return 	View("Edit", u);
+						return RedirectToAction(vista, new { Id = idUs });
 					
 				}else{
-					 ViewBag.error= "Las contraseñas no coinciden";
+					 TempData["error"]= "Las contraseñas no coinciden";
 					 ViewBag.Roles = Usuario.ObtenerRoles();
 					
 					 Usuario u = bdUsuarios.ObtenerPorId(idUs);
-					return 	View("Edit", u);
+						return RedirectToAction(vista, new { Id = idUs });
 				}
 
 
 				
 			}else{
-				 ViewBag.error= "Las contraseñas no coinciden";
+				 TempData["error"]= "La contraseña actual no es correcta";
 				ViewBag.Roles = Usuario.ObtenerRoles();
 				 Usuario u = bdUsuarios.ObtenerPorId(idUs);
-					return 	View("Edit", u);
+					return RedirectToAction(vista, new { Id = idUs });
 				}
 			}
 		

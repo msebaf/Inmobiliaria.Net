@@ -142,5 +142,40 @@ namespace Inmobiliaria.Net.Controllers
                 return View();
             }
         }
+
+         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administrador")]
+        public ActionResult SacarM(int id)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+                bdInmuebles.SacarM(id);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+          [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administrador")]
+        public ActionResult AgregarM(int id)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+                bdInmuebles.AgregarM(id);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
 }

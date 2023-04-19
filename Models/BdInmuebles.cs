@@ -200,5 +200,32 @@ public class BdInmuebles
     }
     return res;
     }
+
+    public void SacarM(int id){
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            var query = @"UPDATE inmueble SET Disponible = 0 WHERE Id = @id";
+            using (var command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id", id);
+                connection.Open();
+                command.ExecuteNonQuery();
+
+            }
+        }
+    }
+    public void AgregarM(int id){
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            var query = @"UPDATE inmueble SET Disponible = 1 WHERE Id = @id";
+            using (var command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id", id);
+                connection.Open();
+                command.ExecuteNonQuery();
+
+            }
+        }
+    }
 }
 

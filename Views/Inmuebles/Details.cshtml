@@ -94,7 +94,17 @@
     <a asp-action="Index">VOLVER</a> | 
     @if (User.IsInRole("Administrador"))
     {
-          @Html.ActionLink("BORRAR", "Delete", new { id = Model.Id })
+          @Html.ActionLink("BORRAR", "Delete", new { id = Model.Id }) 
+
+          if(Model.Disponible == true){
+             <form asp-action="SacarM" asp-route-id="@Model.Id" method="post">
+    <button type="submit">SACAR DE MERCADO</button>
+</form>
+          }else{
+             <form asp-action="AgreGarM" asp-route-id="@Model.Id" method="post">
+    <button type="submit">AGREGAR AL MERCADO</button>
+</form>
+          }
     }
     
 </div>
