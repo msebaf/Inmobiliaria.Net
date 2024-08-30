@@ -58,7 +58,7 @@ namespace Inmobiliaria.Net.Controllers
             BdInmuebles bdInmu = new BdInmuebles();
             BdInquilinos bdInqui = new BdInquilinos();
            
-                 ViewBag.inmuebles = bdInmu.Getinmuebles();
+                 ViewBag.inmuebles = bdInmu.Getinmuebles(null);
                  ViewBag.inquilinos = bdInqui.Getinquilinos();
                  
             return View();
@@ -98,7 +98,7 @@ namespace Inmobiliaria.Net.Controllers
         
                   BdInmuebles bdInmu = new BdInmuebles();
             BdInquilinos bdInqui = new BdInquilinos();
-                 ViewBag.inmuebles = bdInmu.Getinmuebles();
+                 ViewBag.inmuebles = bdInmu.Getinmuebles(null);
                  ViewBag.inquilinos = bdInqui.Getinquilinos();
                 
                 
@@ -108,7 +108,7 @@ namespace Inmobiliaria.Net.Controllers
             }else{
                 BdInmuebles bdInmu = new BdInmuebles();
             BdInquilinos bdInqui = new BdInquilinos();
-                 ViewBag.inmuebles = bdInmu.Getinmuebles();
+                 ViewBag.inmuebles = bdInmu.Getinmuebles(null);
                  ViewBag.inquilinos = bdInqui.Getinquilinos();
                 
                 
@@ -123,7 +123,7 @@ namespace Inmobiliaria.Net.Controllers
             var contrato = bdContratos.GetContrato(id);
             BdInmuebles bdInmu = new BdInmuebles();
             BdInquilinos bdInqui = new BdInquilinos();
-            ViewBag.inmuebles = bdInmu.Getinmuebles();
+            ViewBag.inmuebles = bdInmu.Getinmuebles(null);
             ViewBag.inquilinos = bdInqui.Getinquilinos();
             
             return View(contrato);
@@ -161,7 +161,7 @@ namespace Inmobiliaria.Net.Controllers
         
                   BdInmuebles bdInmu = new BdInmuebles();
             BdInquilinos bdInqui = new BdInquilinos();
-                 ViewBag.inmuebles = bdInmu.Getinmuebles();
+                 ViewBag.inmuebles = bdInmu.Getinmuebles(null);
                  ViewBag.inquilinos = bdInqui.Getinquilinos();
                 
                 
@@ -173,7 +173,7 @@ namespace Inmobiliaria.Net.Controllers
             
             BdInmuebles bdInmu = new BdInmuebles();
             BdInquilinos bdInqui = new BdInquilinos();
-            ViewBag.inmuebles = bdInmu.Getinmuebles();
+            ViewBag.inmuebles = bdInmu.Getinmuebles(null);
             ViewBag.inquilinos = bdInqui.Getinquilinos();
             
             return View(contrato);
@@ -220,7 +220,7 @@ namespace Inmobiliaria.Net.Controllers
             BdInmuebles bdInmu = new BdInmuebles();
             BdInquilinos bdInqui = new BdInquilinos();
            
-                 ViewBag.inmuebles = bdInmu.Getinmuebles();
+                 ViewBag.inmuebles = bdInmu.Getinmuebles(null);
                  ViewBag.inquilinos = bdInqui.Getinquilinos();
                  Contrato contrato = bdContratos.GetContrato(Id);
                  contrato.FechaInicio = contrato.FechaFinal.HasValue? contrato.FechaFinal.Value.AddDays(1) : DateTime.Now;;
@@ -263,7 +263,7 @@ namespace Inmobiliaria.Net.Controllers
         
                   BdInmuebles bdInmu = new BdInmuebles();
             BdInquilinos bdInqui = new BdInquilinos();
-                 ViewBag.inmuebles = bdInmu.Getinmuebles();
+                 ViewBag.inmuebles = bdInmu.Getinmuebles(null);
                  ViewBag.inquilinos = bdInqui.Getinquilinos();
                 
                 
@@ -273,7 +273,7 @@ namespace Inmobiliaria.Net.Controllers
             }else{
                 BdInmuebles bdInmu = new BdInmuebles();
             BdInquilinos bdInqui = new BdInquilinos();
-                 ViewBag.inmuebles = bdInmu.Getinmuebles();
+                 ViewBag.inmuebles = bdInmu.Getinmuebles(null);
                  ViewBag.inquilinos = bdInqui.Getinquilinos();
                 
                 

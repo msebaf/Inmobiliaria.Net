@@ -17,14 +17,28 @@ namespace Inmobiliaria.Net.Controllers
     {
         public readonly BdInmuebles bdInmuebles = new BdInmuebles();
         // GET: Inmuebles
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {   
-            BdTipos bdt= new BdTipos();
-            BdUsos bdu = new BdUsos();
-            ViewBag.tipos = bdt.GetTipos();
-            ViewBag.usos = bdu.GetUsos();
-            var Inmuebles = bdInmuebles.Getinmuebles();
-            return View(Inmuebles);
+            ViewBag.propietario = id;
+            if(id == null){
+                BdTipos bdt= new BdTipos();
+                BdUsos bdu = new BdUsos();
+                ViewBag.tipos = bdt.GetTipos();
+                ViewBag.usos = bdu.GetUsos();
+                var Inmuebles = bdInmuebles.Getinmuebles(null);
+                return View(Inmuebles);
+            }else{
+                
+                BdTipos bdt= new BdTipos();
+                BdUsos bdu = new BdUsos();
+                ViewBag.tipos = bdt.GetTipos();
+                ViewBag.usos = bdu.GetUsos();
+                var Inmuebles = bdInmuebles.Getinmuebles(id);
+                return View(Inmuebles);
+            }
+
+
+             
         }
 
         // GET: Inmuebles/Details/5
@@ -123,6 +137,8 @@ namespace Inmobiliaria.Net.Controllers
                  ViewBag.usos = bdu.GetUsos();
             return View(inmu);
         }
+
+
 
         // POST: Inmuebles/Delete/5
         [HttpPost]

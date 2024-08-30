@@ -139,5 +139,15 @@ namespace Inmobiliaria.Net.Controllers
             return View();
         }
 
+
+        public ActionResult Details(int id)
+        {
+            var pago = bdPagos.GetPago(id);
+            return View(pago);
+        }
+
+      
+
     }
 }
+

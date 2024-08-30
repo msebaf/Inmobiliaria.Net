@@ -74,10 +74,12 @@ public class BdInmuebles
         return res;
     }
 
-    public List<Inmueble>Getinmuebles()
+    public List<Inmueble>Getinmuebles(int? id)
     {
-
         List<Inmueble> inmuebles = new List<Inmueble>();
+        if(id == null){
+
+        
 
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
@@ -119,6 +121,52 @@ public class BdInmuebles
 
             }
             connection.Close();
+        }
+        }else{
+            
+
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            var query = @"SELECT i.Id, i.Direccion, i.Tipo, i.Uso, i.CantidadDeAmbientes, i.Superficie, i.Precio, i.PropietarioId, i.Disponible,
+             p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email FROM inmueble i JOIN Propietario p on 
+             i.PropietarioId = p.Id  where i.PropietarioId = @idProp";
+            using (var command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@idProp", id);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Inmueble inmueble = new Inmueble
+                        {
+                            Id = reader.GetInt32(0), // ID
+                            Direccion = reader.GetString(nameof(inmueble.Direccion)), // Direccion = reader.GetString("Direccion")
+                            Tipo = reader.GetInt32(nameof(inmueble.Tipo)), // Tipo = reader.GetString("Tipo")
+                            Uso = reader.GetInt32(nameof(inmueble.Uso)), // Uso = reader.GetString("Uso")
+                            CantidadDeAmbientes = reader.GetInt32(nameof(inmueble.CantidadDeAmbientes)), // CantidadDeAmbientes = reader.GetInt32("CantidadDeAmbientes")
+                            Superficie = reader.GetDecimal(nameof(inmueble.Superficie)), // Superficie = reader.GetDecimal("Superficie")
+                            Precio = reader.GetDecimal(nameof(inmueble.Precio)), // Precio = reader.GetDecimal("Precio")
+                            Duenio = new Propietario
+                            {
+                                Id = reader.GetInt32(7), // Id = reader.GetInt32("Id")
+                                Dni = reader.GetString(9), // Dni = reader.GetInt32("Dni")
+                                Nombre = reader.GetString(10), // Nombre = reader.GetString("Nombre")
+                                Apellido = reader.GetString(11), // Apellido = reader.GetString("Apellido")
+                                Telefono = reader.GetString(12), // Telefono = reader.GetString("Telefono")
+                                Email = reader.GetString(13) // Email = reader.GetString("Email")
+                            },
+                            PropietarioId = reader.GetInt32(7), // PropietarioId = reader.GetInt32("PropietarioId")
+                            Disponible = reader.GetBoolean(8)
+                            
+                        };
+                        inmuebles.Add(inmueble);
+                    }
+                }
+
+            }
+            connection.Close();
+        }
         }
         return inmuebles;
     }
@@ -227,5 +275,9 @@ public class BdInmuebles
             }
         }
     }
+
+
+
+     
 }
 

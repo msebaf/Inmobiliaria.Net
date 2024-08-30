@@ -122,7 +122,7 @@ i.Direccion, i.Uso, i.Disponible, inq.Dni, inq.Nombre, inq.Apellido
         {
             var query = @"SELECT c.Id, c.InmuebleId, c.InquilinoId, c.FechaInicio, c.FechaFinal, c.MontoMensual, i.Id, 
 i.Direccion, i.Uso, i.Disponible, inq.Dni, inq.Nombre, inq.Apellido
-        from contrato c  JOIN inmueble i on c.InmuebleId = i.Id JOIN inquilino inq on inq.Id = c.InquilinoId WHERE YEAR(c.FechaFinal) >= YEAR(NOW()) AND  MONTH(c.FechaFinal) >= MONTH(NOW()) AND DAY(c.FechaFinal) >= DAY(NOW()) ORDER BY FechaFinal ASC";
+        from contrato c  JOIN inmueble i on c.InmuebleId = i.Id JOIN inquilino inq on inq.Id = c.InquilinoId WHERE c.FechaFinal >= NOW() ORDER BY c.FechaFinal ASC";
             using (var command = new MySqlCommand(query, connection))
             {
                 connection.Open();

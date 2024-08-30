@@ -26,6 +26,7 @@ public class Inmueble
     public bool Disponible {get;set;}
 
 
+    [Display(Name = "Dueño")]
      public Propietario? Duenio { get; set; }
 
     public Inmueble()

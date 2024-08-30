@@ -5,7 +5,7 @@
 <h1>Contratos</h1>
 
 
-<table class="table">
+<table class="table" id="tablaContratos">
     <thead>
         <tr>
         
@@ -31,7 +31,12 @@
 
             </th>
           
-            <th></th>
+            <th>
+                 <div class="form-group">
+                    <label for="buscarInmueble">Buscar por inmueble</label>
+                    <input type="text" id="buscarInmueble" class="form-control" placeholder="Buscar Inmueble">
+                </div>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -75,3 +80,26 @@
 }
     </tbody>
 </table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var inputBusquedaInmueble = document.getElementById('buscarInmueble');
+        var filas = document.querySelectorAll('#tablaContratos tbody tr');
+
+        inputBusquedaInmueble.addEventListener('keyup', filtrarTabla);
+
+        function filtrarTabla() {
+            var inmuebleBusqueda = inputBusquedaInmueble.value.toLowerCase().trim();
+
+            filas.forEach(function (fila) {
+                var textoInmueble = fila.cells[1].textContent.toLowerCase().trim();
+
+                if (textoInmueble.includes(inmuebleBusqueda)) {
+                    fila.style.display = '';
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>

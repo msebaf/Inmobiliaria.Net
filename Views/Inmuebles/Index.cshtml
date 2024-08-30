@@ -1,3 +1,4 @@
+@using Inmobiliaria.Net.Models
 @model IEnumerable<Inmobiliaria.Net.Models.Inmueble>
 
 @{
@@ -18,7 +19,7 @@
 <h1>Inmuebles</h1>
 
 
-<table class="table">
+<table class="table" id="tabla">
     <thead>
         <tr>
         
@@ -41,11 +42,19 @@
            
               <th>
                 @Html.DisplayNameFor(model => model.Disponible)
+                <input type="checkbox" id="filtrarDisponibles">
             </th>
-          
-            
-          
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duenio) 
+            </th>
+           <th>
+            @if(ViewBag.propietario == null){
+            <div class="form-group">
+                <label for="buscarPduenio">Buscar por propietario</label>
+                <input type="text" id="buscarPduenio" class="form-control" placeholder="Nombre o Apellido">
+            </div>
+            }
+           </th>
         </tr>
     </thead>
     <tbody>
@@ -72,6 +81,7 @@
             <td>
                 @(item.Disponible? "Disponible" : "No Disponible")
             </td>
+            <td>@Html.ActionLink((item.Duenio.Nombre + " " + item.Duenio.Apellido), "Details", "Propietarios", new {id = item.Duenio.Id})</td>
 
 
             <td>
@@ -85,3 +95,34 @@
 }
     </tbody>
 </table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var inputBusqueda = document.getElementById('buscarPduenio');
+        var checkboxDisponibles = document.getElementById('filtrarDisponibles');
+        var filas = document.querySelectorAll('#tabla tbody tr');
+
+        inputBusqueda.addEventListener('keyup', filtrarTabla);
+        checkboxDisponibles.addEventListener('change', filtrarTabla);
+
+        function filtrarTabla() {
+            var propietarioBusqueda = inputBusqueda.value.toLowerCase().trim();
+            var filtrarSoloDisponibles = checkboxDisponibles.checked;
+
+            filas.forEach(function (fila) {
+                var texto = fila.textContent.toLowerCase();
+                var disponibilidadTexto = fila.cells[5].textContent.trim();
+
+                var mostrarPorPropietario = texto.includes(propietarioBusqueda);
+                var mostrarPorDisponibilidad = !filtrarSoloDisponibles || disponibilidadTexto === "Disponible";
+
+                if (mostrarPorPropietario && mostrarPorDisponibilidad) {
+                    fila.style.display = '';
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
+
