@@ -41,6 +41,28 @@ namespace Inmobiliaria.Net.Controllers
              
         }
 
+
+
+
+
+        public ActionResult RecuperarDisp(DateTime fechaInicio, DateTime fechaFinal)
+            {
+                BdTipos bdt= new BdTipos();
+                BdUsos bdu = new BdUsos();
+                ViewBag.tipos = bdt.GetTipos();
+                ViewBag.usos = bdu.GetUsos();
+                ViewBag.FechaInicio = fechaInicio;
+                ViewBag.FechaFinal = fechaFinal;
+                var inmuebles = bdInmuebles.GetInmueblesDisponibles(fechaInicio, fechaFinal);
+                
+                return View(inmuebles);
+            }
+
+
+
+
+
+
         // GET: Inmuebles/Details/5
         public ActionResult Details(int id)
         {

@@ -1,4 +1,7 @@
 @model Inmobiliaria.Net.Models.Contrato
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 @{
     ViewData["Title"] = "Edit";
@@ -59,6 +62,7 @@
                 <input asp-for="MontoMensual" class="form-control" required/>
                 <span asp-validation-for="MontoMensual" class="text-danger"></span>
             </div>
+            
            
          
 

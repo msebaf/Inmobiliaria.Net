@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
+
 namespace Inmobiliaria.Net.Models;
 
 public class Contrato
@@ -19,6 +20,9 @@ public class Contrato
     public DateTime? FechaFinal { get; set; }
     
     [Display(Name = "Monto")]
+    [Required(ErrorMessage = "El monto es obligatorio.")]
+    [RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage = "El monto debe ser un número válido.")]
+    [Range(0.01, double.MaxValue, ErrorMessage = "El monto debe ser un número positivo.")]
     public double? MontoMensual { get; set; }
     
     public Inmueble inmueble { get; set; }

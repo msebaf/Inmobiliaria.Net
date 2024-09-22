@@ -19,10 +19,17 @@ namespace Inmobiliaria.Net.Controllers
     {
         public readonly BdContratos bdContratos = new BdContratos();
         // GET: Inmuebles
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {   
-            
-            var contratos = bdContratos.GetContratos();
+              var montoRescindido = TempData["MontoRescindido"];
+                if (montoRescindido != null)
+                {
+                    ViewBag.MontoRescindido = montoRescindido.ToString();
+                    Console.WriteLine($"Monto Rescindido: {montoRescindido}");
+                }
+                
+                ViewBag.idInmueble = id;
+            var contratos = bdContratos.GetContratos(id);
             return View(contratos);
         }
 
@@ -58,7 +65,7 @@ namespace Inmobiliaria.Net.Controllers
             BdInmuebles bdInmu = new BdInmuebles();
             BdInquilinos bdInqui = new BdInquilinos();
            
-                 ViewBag.inmuebles = bdInmu.Getinmuebles(null);
+                 ViewBag.inmuebles = bdInmu.GetInmueblesDisp();
                  ViewBag.inquilinos = bdInqui.Getinquilinos();
                  
             return View();
@@ -76,7 +83,7 @@ namespace Inmobiliaria.Net.Controllers
 
                 int conts = bdContratos.GetContratoCrearValidador(contrato.FechaInicio, contrato.FechaFinal, contrato.InmuebleId);
                 if(conts==0){
-                    
+                    Console.WriteLine(conts);
                 
             try
             {
@@ -92,7 +99,7 @@ namespace Inmobiliaria.Net.Controllers
                 return View();
             }
             }else{
-               
+               Console.WriteLine(conts);
                 ModelState.AddModelError("FechaFinal", "El inmueble no esta disponible en este periodo");
                 
         
@@ -215,12 +222,15 @@ namespace Inmobiliaria.Net.Controllers
     
 
     
-    public ActionResult Renovar(int Id)
+    public ActionResult Renovar(int Id, int inmuebleId)
         {
             BdInmuebles bdInmu = new BdInmuebles();
             BdInquilinos bdInqui = new BdInquilinos();
-           
-                 ViewBag.inmuebles = bdInmu.Getinmuebles(null);
+                List<Inmueble> inmuebles = new List<Inmueble>();;
+              Inmueble  inmueble = bdInmu.Getinmueble(inmuebleId);
+              Console.WriteLine(inmueble);
+              inmuebles.Add(inmueble);
+                 ViewBag.inmuebles = inmuebles;
                  ViewBag.inquilinos = bdInqui.Getinquilinos();
                  Contrato contrato = bdContratos.GetContrato(Id);
                  contrato.FechaInicio = contrato.FechaFinal.HasValue? contrato.FechaFinal.Value.AddDays(1) : DateTime.Now;;
@@ -239,7 +249,7 @@ namespace Inmobiliaria.Net.Controllers
             if(isValid){
 
 
-                int conts = bdContratos.GetContratoCrearValidador(contrato.FechaInicio, contrato.FechaFinal, contrato.InmuebleId);
+                int conts = bdContratos.GetContratoRenovarValidador(contrato.FechaInicio, contrato.FechaFinal, contrato.InmuebleId);
                 if(conts==0){
                     
                 
@@ -280,6 +290,43 @@ namespace Inmobiliaria.Net.Controllers
                 
                 return View();
             }
+        }
+
+
+
+       
+        public ActionResult AlquilarPorFechas(DateTime fechaInicio, DateTime fechaFinal, int inmuebleId)
+        {
+            BdInmuebles bdInmu = new BdInmuebles();
+                List<Inmueble> inmuebles = new List<Inmueble>();;
+              Inmueble  inmueble = bdInmu.Getinmueble(inmuebleId);
+              Console.WriteLine(inmueble);
+              inmuebles.Add(inmueble);
+                 ViewBag.inmuebles = inmuebles;
+                 Contrato contrato = new Contrato();
+                 contrato.InmuebleId = inmuebleId;
+                 contrato.FechaInicio = fechaInicio;
+                 contrato.FechaFinal = fechaFinal;
+                 BdInquilinos bdInqui = new BdInquilinos();
+                 ViewBag.inquilinos = bdInqui.Getinquilinos();
+                
+                 
+            return View("Renovar", contrato);
+        }
+
+
+
+
+
+
+
+         public ActionResult Rescindir(int Id)
+        {
+            
+                 var monto = bdContratos.RescindirContrato(Id);
+                 TempData["MontoRescindido"] =  monto.ToString();;
+                 
+            return RedirectToAction("Index");
         }
 }
  }

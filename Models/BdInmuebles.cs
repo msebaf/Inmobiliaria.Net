@@ -171,6 +171,178 @@ public class BdInmuebles
         return inmuebles;
     }
 
+
+    public List<Inmueble> GetInmueblesDisp()
+{
+    List<Inmueble> inmuebles = new List<Inmueble>();
+
+    using (MySqlConnection connection = new MySqlConnection(connectionString))
+    {
+        var query = @"SELECT i.Id, i.Direccion, i.Tipo, i.Uso, i.CantidadDeAmbientes, i.Superficie, i.Precio, i.PropietarioId, i.Disponible,
+                      p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email 
+                      FROM inmueble i 
+                      JOIN Propietario p on i.PropietarioId = p.Id  
+                      WHERE i.Disponible = true";
+                      
+        using (var command = new MySqlCommand(query, connection))
+        {
+            connection.Open();
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    Inmueble inmueble = new Inmueble
+                    {
+                        Id = reader.GetInt32(0),
+                        Direccion = reader.GetString(nameof(inmueble.Direccion)), 
+                        Tipo = reader.GetInt32(nameof(inmueble.Tipo)), 
+                        Uso = reader.GetInt32(nameof(inmueble.Uso)), 
+                        CantidadDeAmbientes = reader.GetInt32(nameof(inmueble.CantidadDeAmbientes)), 
+                        Superficie = reader.GetDecimal(nameof(inmueble.Superficie)), 
+                        Precio = reader.GetDecimal(nameof(inmueble.Precio)),
+                        Duenio = new Propietario
+                        {
+                            Id = reader.GetInt32(7), 
+                            Dni = reader.GetString(9), 
+                            Nombre = reader.GetString(10),
+                            Apellido = reader.GetString(11), 
+                            Telefono = reader.GetString(12), 
+                            Email = reader.GetString(13) 
+                        },
+                        PropietarioId = reader.GetInt32(7), 
+                        Disponible = reader.GetBoolean(8) 
+                    };
+                    inmuebles.Add(inmueble);
+                }
+            }
+        }
+        connection.Close();
+    }
+
+    return inmuebles;
+}
+
+
+
+
+
+public List<Inmueble> GetInmueblesDisponibles(DateTime inicio, DateTime final)
+{
+    Console.WriteLine(inicio);
+    Console.WriteLine(final);
+    List<Inmueble> inmueblesDisponibles = new List<Inmueble>();
+
+    using (MySqlConnection connection = new MySqlConnection(connectionString))
+    {
+        // Primero, obtén los inmuebles disponibles
+        var queryInmuebles = @"
+            SELECT 
+                i.Id, i.Direccion, i.Tipo, i.Uso, i.CantidadDeAmbientes, i.Superficie, i.Precio, i.PropietarioId, i.Disponible,
+                p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email 
+            FROM 
+                inmueble i 
+            JOIN 
+                Propietario p 
+            ON 
+                i.PropietarioId = p.Id
+            WHERE 
+                i.Disponible = true";
+        
+        connection.Open();
+        using (var commandInmuebles = new MySqlCommand(queryInmuebles, connection))
+        {
+            using (var readerInmuebles = commandInmuebles.ExecuteReader())
+            {
+                List<Inmueble> inmueblesTemp = new List<Inmueble>();
+
+                while (readerInmuebles.Read())
+                {
+                    Inmueble inmueble = new Inmueble
+                    {
+                        Id = readerInmuebles.GetInt32(0),
+                        Direccion = readerInmuebles.GetString(1),
+                        Tipo = readerInmuebles.GetInt32(2),
+                        Uso = readerInmuebles.GetInt32(3),
+                        CantidadDeAmbientes = readerInmuebles.GetInt32(4),
+                        Superficie = readerInmuebles.GetDecimal(5),
+                        Precio = readerInmuebles.GetDecimal(6),
+                        PropietarioId = readerInmuebles.GetInt32(7),
+                        Disponible = readerInmuebles.GetBoolean(8),
+                        Duenio = new Propietario
+                        {
+                            Dni = readerInmuebles.GetString(9),
+                            Nombre = readerInmuebles.GetString(10),
+                            Apellido = readerInmuebles.GetString(11),
+                            Telefono = readerInmuebles.GetString(12),
+                            Email = readerInmuebles.GetString(13)
+                        }
+                    };
+
+                    inmueblesTemp.Add(inmueble);
+                }
+
+                readerInmuebles.Close(); // Cierra el primer reader antes de abrir el siguiente
+                    Console.WriteLine(inmueblesTemp);
+                // Para cada inmueble, verifica los contratos asociados
+                var queryContratos = @"
+                    SELECT 
+                        c.FechaInicio, c.FechaFinal
+                    FROM 
+                        contrato c
+                    WHERE 
+                        c.InmuebleId = @InmuebleId
+                    AND 
+                        c.FechaFinal >= NOW()"; // Considerar solo contratos actuales o futuros
+
+                foreach (var inmueble in inmueblesTemp)
+                {
+                    using (var commandContratos = new MySqlCommand(queryContratos, connection))
+                    {
+                        commandContratos.Parameters.AddWithValue("@InmuebleId", inmueble.Id);
+
+                        bool hasConflict = false; // Asume que no hay conflicto inicialmente
+
+                        using (var readerContratos = commandContratos.ExecuteReader())
+                        {
+                            while (readerContratos.Read())
+                            {
+                                DateTime contratoInicio = readerContratos.GetDateTime(0);
+                                DateTime contratoFinal = readerContratos.GetDateTime(1);
+                                Console.WriteLine(contratoInicio);
+                                Console.WriteLine(contratoFinal);
+
+                                // Verifica si las fechas del contrato entran en conflicto con las fechas proporcionadas
+                                if ((inicio >= contratoInicio && inicio <= contratoFinal) || 
+                                         (final >= contratoInicio && final <= contratoFinal))
+                                    {
+                                        hasConflict = true;
+                                        break;
+                                    }
+                                                                }
+                        }
+
+                        // Si no hubo conflicto, agrega el inmueble a la lista de disponibles
+                        if (!hasConflict)
+                        {
+                            inmueblesDisponibles.Add(inmueble);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    Console.WriteLine(inmueblesDisponibles);
+    return inmueblesDisponibles;
+}
+
+
+
+
+
+
+
+
+
      public Inmueble Getinmueble(int id)
     {
 

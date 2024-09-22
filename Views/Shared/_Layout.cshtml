@@ -60,7 +60,7 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown4">
                         <li><a class="dropdown-item" asp-area="" asp-controller="Contratos" asp-action="Vigentes">Contratos Vigentes</a></li>
                         <li><a class="dropdown-item" asp-area="" asp-controller="Contratos" asp-action="Vencidos">Contratos Vencidos</a></li>
-                        <li><a class="dropdown-item" asp-area="" asp-controller="Contratos" asp-action="Index">Lista Contratos</a></li>
+                        <li><a class="dropdown-item" asp-area="" asp-controller="Contratos" asp-action="Index" asp-route-id="">Lista Contratos</a></li>
                         <li><a class="dropdown-item" asp-area="" asp-controller="Contratos" asp-action="Create">Alta Contrato</a></li>
                     </ul>
                 </li>
@@ -92,6 +92,62 @@
                 }
                 }
                     </div>
+
+
+
+
+
+
+
+
+
+
+                    @if(User.Identity.IsAuthenticated){
+                       <form asp-controller="Inmuebles" asp-action="RecuperarDisp" method="post" onsubmit="return validateDates()" style="display: flex; flex-direction: row; margin-left: 15px;">
+                            <div class="form-group">
+                                <label for="fechaInicio">Fecha de Inicio</label>
+                                <input type="date" id="fechaInicio" name="fechaInicio" class="form-control" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fechaFinal">Fecha Final</label>
+                                <input type="date" id="fechaFinal" name="fechaFinal" class="form-control" required />
+                            </div>
+
+                            <div class="form-group" style="margin-top: 5.2%; margin-right: 60px; margin-left: 15px;">
+                                <input type="submit" value="Buscar" class="btn btn-primary" />
+                            </div>
+                        </form>
+                  }
+                    <script>
+                        function validateDates() {
+                            var fechaInicio = new Date(document.getElementById('fechaInicio').value);
+                            var fechaFinal = new Date(document.getElementById('fechaFinal').value);
+                            var today = new Date();
+
+                            
+                            if (fechaInicio < today || fechaFinal < today) {
+                                alert('Las fechas no pueden ser menores que la fecha actual.');
+                                return false; 
+                            }
+
+                            if (fechaFinal < fechaInicio) {
+                                alert('La fecha final no puede ser menor que la fecha de inicio.');
+                                return false;
+                            }
+
+                            return true; 
+                        }
+                    </script>
+
+
+
+
+
+
+
+
+
                     <div class="d-sm-inline-flex">
                         @if (User.Identity.IsAuthenticated)
                         {

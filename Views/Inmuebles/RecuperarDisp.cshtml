@@ -5,6 +5,8 @@
     ViewData["Title"] = "Index";
     var tipos = (IList<Tipo>) ViewBag.tipos;
     var usos = (IList<Uso>) ViewBag.usos;
+    var fechaInicio = ViewBag.FechaInicio;
+    var fechaFinal = ViewBag.FechaFinal;
     Dictionary<int?, String?> tiposMap = new Dictionary<int?, String?>();
     foreach (var item in tipos){
         tiposMap.Add(item.Id, item.TipoInm);
@@ -40,10 +42,7 @@
                 @Html.DisplayNameFor(model => model.Precio)
             </th>
            
-              <th>
-                @Html.DisplayNameFor(model => model.Disponible)
-                <input type="checkbox" id="filtrarDisponibles">
-            </th>
+         
             <th>
                 @Html.DisplayNameFor(model => model.Duenio) 
             </th>
@@ -79,18 +78,17 @@
                 @Html.DisplayFor(modelItem => item.Precio)
             </td>
             
-            <td>
-                @(item.Disponible? "Disponible" : "No Disponible")
-            </td>
+       
             <td>@Html.ActionLink((item.Duenio.Nombre + " " + item.Duenio.Apellido), "Details", "Propietarios", new {id = item.Duenio.Id})</td>
 
 
             <td>
-                @Html.ActionLink("Editar", "Edit", new {  id=item.Id }) |
-                @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
-                @if (User.IsInRole("Administrador")){
-                @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
-                }
+               @Html.ActionLink("Alquilar", "AlquilarPorFechas", "Contratos", new { 
+                    fechaInicio = ((DateTime)ViewBag.FechaInicio).ToString("yyyy-MM-dd"), 
+                    fechaFinal = ((DateTime)ViewBag.FechaFinal).ToString("yyyy-MM-dd"), 
+                    inmuebleId = item.Id 
+                })
+
             </td>
             <td>
                 @Html.ActionLink("Ver contratos", "Index", "Contratos", new { id=item.Id })
@@ -103,7 +101,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var inputBusqueda = document.getElementById('buscarPduenio');
-        var checkboxDisponibles = document.getElementById('filtrarDisponibles');
+  
         var filas = document.querySelectorAll('#tabla tbody tr');
 
         inputBusqueda.addEventListener('keyup', filtrarTabla);
@@ -111,16 +109,16 @@
 
         function filtrarTabla() {
             var propietarioBusqueda = inputBusqueda.value.toLowerCase().trim();
-            var filtrarSoloDisponibles = checkboxDisponibles.checked;
+            
 
             filas.forEach(function (fila) {
                 var texto = fila.textContent.toLowerCase();
                 var disponibilidadTexto = fila.cells[5].textContent.trim();
 
                 var mostrarPorPropietario = texto.includes(propietarioBusqueda);
-                var mostrarPorDisponibilidad = !filtrarSoloDisponibles || disponibilidadTexto === "Disponible";
+              
 
-                if (mostrarPorPropietario && mostrarPorDisponibilidad) {
+                if (mostrarPorPropietario) {
                     fila.style.display = '';
                 } else {
                     fila.style.display = 'none';

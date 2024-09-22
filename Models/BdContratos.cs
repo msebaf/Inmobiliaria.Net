@@ -62,10 +62,11 @@ public class BdContratos
         return res;
     }
 
-    public List<Contrato>GetContratos()
+    public List<Contrato>GetContratos(int? id)
     {
 
         List<Contrato> Contratos = new List<Contrato>();
+        if(id == null){
 
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
@@ -109,6 +110,52 @@ i.Direccion, i.Uso, i.Disponible, inq.Dni, inq.Nombre, inq.Apellido
 
             }
             connection.Close();
+        }
+        }else{
+             using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            var query = @"SELECT c.Id, c.InmuebleId, c.InquilinoId, c.FechaInicio, c.FechaFinal, c.MontoMensual, i.Id, 
+i.Direccion, i.Uso, i.Disponible, inq.Dni, inq.Nombre, inq.Apellido
+        from contrato c  JOIN inmueble i on c.InmuebleId = i.Id JOIN inquilino inq on inq.Id = c.InquilinoId WHERE c.InmuebleId = @id ORDER BY c.FechaFinal DESC";
+            using (var command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id", id);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Contrato contrato = new Contrato
+                        {
+                            Id = reader.GetInt32(nameof(contrato.Id)), // ID
+                            InmuebleId = reader.GetInt32(nameof(contrato.InmuebleId)),
+                            InquilinoId = reader.GetInt32(nameof(contrato.InquilinoId)),
+                            FechaInicio= reader.GetDateTime(nameof(contrato.FechaInicio)),
+                            FechaFinal= reader.GetDateTime(nameof(contrato.FechaFinal)),
+                            MontoMensual= reader.GetDouble(nameof(contrato.MontoMensual)),
+                            inmueble = new Inmueble
+                            {
+                                Id = reader.GetInt32(nameof(contrato.InmuebleId)),
+                                Direccion = reader.GetString(nameof(contrato.inmueble.Direccion)),
+                                Uso = reader.GetInt32(nameof(contrato.inmueble.Uso)),
+                                Disponible = reader.GetBoolean(nameof(contrato.inmueble.Disponible))
+                            },
+                            inquilino = new Inquilino
+                            {
+                                Id = reader.GetInt32(nameof(contrato.InquilinoId)),
+                                Dni = reader.GetString(nameof(contrato.inquilino.Dni)),
+                                Nombre = reader.GetString(nameof(contrato.inquilino.Nombre)),
+                                Apellido = reader.GetString(nameof(contrato.inquilino.Apellido))
+                            }
+                            
+                        };
+                        Contratos.Add(contrato);
+                    }
+                }
+
+            }
+            connection.Close();
+        }
         }
         return Contratos;
     }
@@ -318,7 +365,8 @@ public int GetContratoCrearValidador(DateTime? inicio, DateTime? final, int? inm
     using (MySqlConnection connection = new MySqlConnection(connectionString))
     {
         var query = @"SELECT COUNT(*) FROM contrato 
-WHERE InmuebleId = @inmId  AND ((@FechaInicio BETWEEN contrato.FechaInicio AND contrato.FechaFinal) OR (@FechaFinal BETWEEN contrato.FechaInicio AND contrato.FechaFinal))"; 
+            WHERE InmuebleId = @inmId AND ((@FechaInicio > contrato.FechaInicio AND @FechaInicio < contrato.FechaFinal) OR 
+            (@FechaFinal > contrato.FechaInicio AND @FechaFinal < contrato.FechaFinal))"; 
         using (var command = new MySqlCommand(query, connection))
         {
             command.Parameters.AddWithValue("@inmId", inmId);
@@ -331,5 +379,61 @@ WHERE InmuebleId = @inmId  AND ((@FechaInicio BETWEEN contrato.FechaInicio AND c
     }
     return count;
 }
+
+public int GetContratoRenovarValidador(DateTime? inicio, DateTime? final, int? inmId)
+{
+    int count = 0;
+    using (MySqlConnection connection = new MySqlConnection(connectionString))
+    {
+       var query = @"SELECT COUNT(*) FROM contrato 
+        WHERE InmuebleId = @inmId AND (
+            (@FechaInicio BETWEEN contrato.FechaInicio AND contrato.FechaFinal) OR 
+            (@FechaFinal BETWEEN contrato.FechaInicio AND contrato.FechaFinal) 
+        )";
+        using (var command = new MySqlCommand(query, connection))
+        {
+            command.Parameters.AddWithValue("@inmId", inmId);
+            command.Parameters.AddWithValue("@FechaInicio", inicio);
+            command.Parameters.AddWithValue("@FechaFinal", final);
+            
+            connection.Open();
+            count = Convert.ToInt32(command.ExecuteScalar());
+        }
+    }
+    return count;
+}
+
+
+public double RescindirContrato(int id)
+{
+    double montoDoble = 0;
+    using (MySqlConnection connection = new MySqlConnection(connectionString))
+    {
+        var querySelect = @"SELECT MontoMensual FROM contrato WHERE Id = @id";
+        var queryUpdate = @"UPDATE contrato SET FechaFinal = @fechaHoy WHERE Id = @id";
+
+        using (var commandSelect = new MySqlCommand(querySelect, connection))
+        {
+            commandSelect.Parameters.AddWithValue("@id", id);
+            
+            connection.Open();
+            var montoMensual = commandSelect.ExecuteScalar();
+            if (montoMensual != null)
+            {
+                montoDoble = Convert.ToDouble(montoMensual) * 2;
+
+                using (var commandUpdate = new MySqlCommand(queryUpdate, connection))
+                {
+                    commandUpdate.Parameters.AddWithValue("@id", id);
+                    commandUpdate.Parameters.AddWithValue("@fechaHoy", DateTime.Today);
+
+                    commandUpdate.ExecuteNonQuery();
+                }
+            }
+        }
+    }
+    return montoDoble;
+}
+
 }
 

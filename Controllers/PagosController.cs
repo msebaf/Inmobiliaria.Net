@@ -38,7 +38,7 @@ namespace Inmobiliaria.Net.Controllers
             BdContratos bdcCnts = new BdContratos();
             
            
-                 ViewBag.contratos = bdcCnts.GetContratos();
+                 ViewBag.contratos = bdcCnts.GetContratos(null);
              
                  
             return View();
@@ -70,7 +70,7 @@ namespace Inmobiliaria.Net.Controllers
             BdContratos bdcCnts = new BdContratos();
             
            
-                 ViewBag.contratos = bdcCnts.GetContratos();
+                 ViewBag.contratos = bdcCnts.GetContratos(null);
             var contrato = bdPagos.GetPago(id);
            
             

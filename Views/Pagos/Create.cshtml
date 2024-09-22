@@ -21,7 +21,7 @@
                 <select class="form-control" name="ContratoId">
                  @foreach (var item in conts)
                 {
-                    @:<option value="@item.Id">@item.ToString()</option>
+                    @:<option value="@item.Id">@item.inmueble.Direccion</option>
                 }
                 </select>
                 <span asp-validation-for="ContratoId" class="text-danger"></span>
